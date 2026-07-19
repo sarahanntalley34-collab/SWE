@@ -195,6 +195,15 @@ function Home() {
               </div>
             ))}
           </div>
+          <div className="mt-10 text-center">
+            <a
+              href="/services"
+              aria-label="View pricing for our services"
+              className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800"
+            >
+              View pricing
+            </a>
+          </div>
         </div>
       </Section>
 
@@ -303,6 +312,22 @@ function Home() {
       <footer className="border-t border-gray-200 px-6 py-8 dark:border-gray-800 sm:px-8 lg:px-12">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-gray-500 dark:text-gray-500 sm:flex-row">
           <p>&copy; {new Date().getFullYear()} {name}. All rights reserved.</p>
+          <div className="flex items-center gap-6">
+            <a
+              href="/services"
+              aria-label="Services and pricing"
+              className="hover:text-gray-700 dark:hover:text-gray-300"
+            >
+              Services
+            </a>
+            <a
+              href="/contact"
+              aria-label="Contact us"
+              className="hover:text-gray-700 dark:hover:text-gray-300"
+            >
+              Contact
+            </a>
+          </div>
           <a
             href="mailto:hello@shipwright.engineering"
             aria-label="Send us an email"

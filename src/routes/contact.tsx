@@ -160,6 +160,22 @@ function Contact() {
             <p>
               &copy; {new Date().getFullYear()} {name}. All rights reserved.
             </p>
+            <div className="flex items-center gap-6">
+              <a
+                href="/"
+                aria-label="Back to home"
+                className="hover:text-gray-700 dark:hover:text-gray-300"
+              >
+                Home
+              </a>
+              <a
+                href="/services"
+                aria-label="Services and pricing"
+                className="hover:text-gray-700 dark:hover:text-gray-300"
+              >
+                Services
+              </a>
+            </div>
             <a
               href="mailto:hello@shipwright.engineering"
               aria-label="Send us an email"
@@ -286,6 +302,22 @@ function Contact() {
           <p>
             &copy; {new Date().getFullYear()} {name}. All rights reserved.
           </p>
+          <div className="flex items-center gap-6">
+            <a
+              href="/"
+              aria-label="Back to home"
+              className="hover:text-gray-700 dark:hover:text-gray-300"
+            >
+              Home
+            </a>
+            <a
+              href="/services"
+              aria-label="Services and pricing"
+              className="hover:text-gray-700 dark:hover:text-gray-300"
+            >
+              Services
+            </a>
+          </div>
           <a
             href="mailto:hello@shipwright.engineering"
             aria-label="Send us an email"
