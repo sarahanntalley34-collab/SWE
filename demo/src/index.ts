@@ -31,7 +31,7 @@ app.route("/api/events", eventsRoutes);
 // ── WebSocket server ──────────────────────────────────────────────────────────
 
 const server = Bun.serve<string>({
-  port: parseInt(process.env.PORT || "3001"),
+  port: 3001,
   fetch(req, srv) {
     // Handle WebSocket upgrade: extract token from URL and pass via data
     const url = new URL(req.url);
@@ -61,5 +61,3 @@ const server = Bun.serve<string>({
 console.log(`🚀 Shipwright Metrics API running on http://localhost:${server.port}`);
 console.log(`   WebSocket: ws://localhost:${server.port}/ws?token=<jwt>`);
 console.log(`   Health:    http://localhost:${server.port}/health`);
-
-export default app;
