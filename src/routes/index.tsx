@@ -157,12 +157,14 @@ function Home() {
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <a
             href="/contact"
+            aria-label="Start a project with Shipwright Engineering"
             className="inline-flex items-center rounded-lg bg-gray-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
           >
             Start a Project
           </a>
           <a
             href="#services"
+            aria-label="View our services"
             className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800"
           >
             What we offer
@@ -204,7 +206,7 @@ function Home() {
             A repeatable process that turns ideas into shipped products — predictably.
           </p>
           <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {steps.map((s) => (
+            {steps.map((s, i) => (
               <div key={s.step} className="relative">
                 <span className="text-5xl font-bold tracking-tight text-indigo-100 dark:text-indigo-950">
                   {s.step}
@@ -215,8 +217,17 @@ function Home() {
                 <p className="mt-2 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
                   {s.description}
                 </p>
-                {s.step !== "04" && (
-                  <div className="mt-6 hidden h-px bg-gray-200 dark:bg-gray-800 lg:block" />
+                {/* Divider on mobile/tablet */}
+                {i < steps.length - 1 && (
+                  <div className="mt-6 h-px bg-gray-200 dark:bg-gray-800 lg:hidden" />
+                )}
+                {/* Connector arrow on desktop */}
+                {i < steps.length - 1 && (
+                  <div className="absolute -right-5 top-10 hidden lg:flex items-center text-gray-300 dark:text-gray-600">
+                    <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    </svg>
+                  </div>
                 )}
               </div>
             ))}
@@ -272,12 +283,14 @@ function Home() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <a
               href="/contact"
+              aria-label="Get in touch with Shipwright Engineering"
               className="inline-flex items-center rounded-lg bg-gray-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
               >
               Get in touch
             </a>
             <a
               href="#services"
+              aria-label="Learn more about our services"
               className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800"
             >
               Learn more
@@ -292,6 +305,7 @@ function Home() {
           <p>&copy; {new Date().getFullYear()} {name}. All rights reserved.</p>
           <a
             href="mailto:hello@shipwright.engineering"
+            aria-label="Send us an email"
             className="hover:text-gray-700 dark:hover:text-gray-300"
           >
             hello@shipwright.engineering
