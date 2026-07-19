@@ -156,7 +156,7 @@ function Home() {
         </p>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <a
-            href="mailto:hello@shipwright.engineering"
+            href="/contact"
             className="inline-flex items-center rounded-lg bg-gray-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
           >
             Start a Project
@@ -271,9 +271,9 @@ function Home() {
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <a
-              href="mailto:hello@shipwright.engineering"
+              href="/contact"
               className="inline-flex items-center rounded-lg bg-gray-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
-            >
+              >
               Get in touch
             </a>
             <a
