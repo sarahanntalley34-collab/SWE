@@ -98,10 +98,11 @@ const steps = [
 
 const projects = [
   {
-    title: "SaaS Analytics Dashboard",
+    title: "Real-Time Metrics Dashboard",
     description:
-      "Real-time metrics dashboard with role-based access, custom charting, and CSV export for a B2B SaaS platform.",
-    tags: ["React", "TypeScript", "PostgreSQL", "WebSockets"],
+      "Live-updating metrics dashboard with WebSocket-powered charts, JWT authentication, and role-based views. Built as a portfolio demo — admin and viewer roles with real-time CPU, memory, and request monitoring.",
+    tags: ["React", "TypeScript", "WebSocket", "Recharts", "Hono", "PostgreSQL"],
+    link: { href: "/demo", label: "View Demo" },
   },
   {
     title: "E-Commerce API & Storefront",
@@ -273,6 +274,16 @@ function Home() {
                     </span>
                   ))}
                 </div>
+                {"link" in p && p.link && (
+                  <div className="mt-5">
+                    <a
+                      href={p.link.href}
+                      className="inline-flex items-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-400"
+                    >
+                      {p.link.label}
+                    </a>
+                  </div>
+                )}
               </div>
             ))}
           </div>
