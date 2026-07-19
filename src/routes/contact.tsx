@@ -146,6 +146,7 @@ function Contact() {
             <div className="mt-8">
               <a
                 href="/"
+                aria-label="Back to home page"
                 className="inline-flex items-center rounded-lg bg-gray-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
               >
                 Back to home
@@ -161,6 +162,7 @@ function Contact() {
             </p>
             <a
               href="mailto:hello@shipwright.engineering"
+              aria-label="Send us an email"
               className="hover:text-gray-700 dark:hover:text-gray-300"
             >
               hello@shipwright.engineering
@@ -270,6 +272,7 @@ function Contact() {
             Prefer email?{" "}
             <a
               href="mailto:hello@shipwright.engineering"
+              aria-label="Send us an email instead"
               className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
             >
               hello@shipwright.engineering
@@ -285,6 +288,7 @@ function Contact() {
           </p>
           <a
             href="mailto:hello@shipwright.engineering"
+            aria-label="Send us an email"
             className="hover:text-gray-700 dark:hover:text-gray-300"
           >
             hello@shipwright.engineering
