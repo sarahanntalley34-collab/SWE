@@ -8,9 +8,9 @@ import type { ReactNode } from "react";
 
 import appCss from "~/styles/app.css?url";
 
-const SITE_TITLE = "Shipwright Engineering";
+const SITE_TITLE = "Retro Engineering";
 const SITE_DESCRIPTION =
-  "Shipwright Engineering — a small, focused team that ships production-quality software end-to-end. Architecture, backend, frontend, and testing.";
+  "Retro Engineering — a small, focused team that ships production-quality software end-to-end. Architecture, backend, frontend, and testing.";
 
 export const Route = createRootRoute({
   head: () => ({

@@ -116,7 +116,7 @@ function DemoPage() {
       <footer className="border-t border-gray-200 px-6 py-8 dark:border-gray-800 sm:px-8 lg:px-12">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-gray-500 dark:text-gray-500 sm:flex-row">
           <p>
-            &copy; {new Date().getFullYear()} Shipwright Engineering. All rights
+            &copy; {new Date().getFullYear()} Retro Engineering. All rights
             reserved.
           </p>
           <div className="flex items-center gap-6">
@@ -140,10 +140,10 @@ function DemoPage() {
             </a>
           </div>
           <a
-            href="mailto:hello@shipwright.engineering"
+            href="mailto:hello@retro.engineering"
             className="hover:text-gray-700 dark:hover:text-gray-300"
           >
-            hello@shipwright.engineering
+            hello@retro.engineering
           </a>
         </div>
       </footer>

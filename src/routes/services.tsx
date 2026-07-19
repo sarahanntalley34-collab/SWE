@@ -106,7 +106,7 @@ function StripeIcon() {
 
 function Services() {
   const businessName = Route.useLoaderData();
-  const name = businessName || "Shipwright Engineering";
+  const name = businessName || "Retro Engineering";
 
   return (
     <div className="min-h-dvh">
@@ -289,11 +289,11 @@ function Services() {
             </a>
           </div>
           <a
-            href="mailto:hello@shipwright.engineering"
+            href="mailto:hello@retro.engineering"
             aria-label="Send us an email"
             className="hover:text-gray-700 dark:hover:text-gray-300"
           >
-            hello@shipwright.engineering
+            hello@retro.engineering
           </a>
         </div>
       </footer>

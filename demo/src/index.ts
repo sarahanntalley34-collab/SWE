@@ -58,6 +58,6 @@ const server = Bun.serve<string>({
   },
 });
 
-console.log(`🚀 Shipwright Metrics API running on http://localhost:${server.port}`);
+console.log(`🚀 Retro Engineering API running on http://localhost:${server.port}`);
 console.log(`   WebSocket: ws://localhost:${server.port}/ws?token=<jwt>`);
 console.log(`   Health:    http://localhost:${server.port}/health`);

@@ -1,8 +1,8 @@
-# Shipwright Metrics Dashboard — Backend Demo
+# Retro Engineering Dashboard — Backend Demo
 
 A real-time metrics dashboard backend built with **Bun**, **Hono**, **Drizzle ORM**, and **Neon PostgreSQL**.
 
-Part of the [Shipwright Engineering](https://shipwright.ctonew.app) portfolio.
+Part of the [Retro Engineering](https://retro.engineering) portfolio.
 
 ## Stack
 
@@ -132,4 +132,4 @@ demo/
 
 ## License
 
-Portfolio demo — Shipwright Engineering
+Portfolio demo — Retro Engineering

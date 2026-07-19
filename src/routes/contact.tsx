@@ -74,7 +74,7 @@ function Section({ children, className = "" }: { children: React.ReactNode; clas
 
 function Contact() {
   const businessName = Route.useLoaderData();
-  const name = businessName || "Shipwright Engineering";
+  const name = businessName || "Retro Engineering";
 
   const [form, setForm] = useState<FormData>({
     name: "",
@@ -177,11 +177,11 @@ function Contact() {
               </a>
             </div>
             <a
-              href="mailto:hello@shipwright.engineering"
+              href="mailto:hello@retro.engineering"
               aria-label="Send us an email"
               className="hover:text-gray-700 dark:hover:text-gray-300"
             >
-              hello@shipwright.engineering
+              hello@retro.engineering
             </a>
           </div>
         </footer>
@@ -287,11 +287,11 @@ function Contact() {
           <p className="mt-6 text-sm text-gray-500 dark:text-gray-500">
             Prefer email?{" "}
             <a
-              href="mailto:hello@shipwright.engineering"
+              href="mailto:hello@retro.engineering"
               aria-label="Send us an email instead"
               className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
             >
-              hello@shipwright.engineering
+              hello@retro.engineering
             </a>
           </p>
         </div>
@@ -319,11 +319,11 @@ function Contact() {
             </a>
           </div>
           <a
-            href="mailto:hello@shipwright.engineering"
+            href="mailto:hello@retro.engineering"
             aria-label="Send us an email"
             className="hover:text-gray-700 dark:hover:text-gray-300"
           >
-            hello@shipwright.engineering
+            hello@retro.engineering
           </a>
         </div>
       </footer>

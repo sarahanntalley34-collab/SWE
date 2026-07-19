@@ -1,7 +1,7 @@
 import type { Context, Next } from "hono";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "shipwright-demo-secret-change-in-production";
+const JWT_SECRET = process.env.JWT_SECRET || "retro-demo-secret-change-in-production";
 
 export interface JwtPayload {
   userId: number;

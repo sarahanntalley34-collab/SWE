@@ -138,7 +138,7 @@ function Section({ children, className = "" }: { children: React.ReactNode; clas
 
 function Home() {
   const businessName = Route.useLoaderData();
-  const name = businessName || "Shipwright Engineering";
+  const name = businessName || "Retro Engineering";
 
   return (
     <div className="min-h-dvh">
@@ -158,7 +158,7 @@ function Home() {
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <a
             href="/contact"
-            aria-label="Start a project with Shipwright Engineering"
+            aria-label="Start a project with Retro Engineering"
             className="inline-flex items-center rounded-lg bg-gray-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
           >
             Start a Project
@@ -303,7 +303,7 @@ function Home() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <a
               href="/contact"
-              aria-label="Get in touch with Shipwright Engineering"
+              aria-label="Get in touch with Retro Engineering"
               className="inline-flex items-center rounded-lg bg-gray-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
               >
               Get in touch
@@ -340,11 +340,11 @@ function Home() {
             </a>
           </div>
           <a
-            href="mailto:hello@shipwright.engineering"
+            href="mailto:hello@retro.engineering"
             aria-label="Send us an email"
             className="hover:text-gray-700 dark:hover:text-gray-300"
           >
-            hello@shipwright.engineering
+            hello@retro.engineering
           </a>
         </div>
       </footer>
