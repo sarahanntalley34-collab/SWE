@@ -11,7 +11,7 @@
     "db:seed": "bun run src/db/seed.ts"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^0.10.4",
+    "@neondatabase/serverless": "^1.1.0",
     "bcryptjs": "^2.4.3",
     "drizzle-orm": "^0.40.0",
     "hono": "^4.7.5",
