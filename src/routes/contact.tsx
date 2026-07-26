@@ -175,6 +175,13 @@ function Contact() {
               >
                 Services
               </a>
+              <a
+                href="/blog"
+                aria-label="Read our blog"
+                className="hover:text-gray-700 dark:hover:text-gray-300"
+              >
+                Blog
+              </a>
             </div>
             <a
               href="mailto:hello@retro.engineering"
@@ -316,6 +323,13 @@ function Contact() {
               className="hover:text-gray-700 dark:hover:text-gray-300"
             >
               Services
+            </a>
+            <a
+              href="/blog"
+              aria-label="Read our blog"
+              className="hover:text-gray-700 dark:hover:text-gray-300"
+            >
+              Blog
             </a>
           </div>
           <a
