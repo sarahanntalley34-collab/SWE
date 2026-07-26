@@ -67,7 +67,7 @@ function useWebSocket(token: string) {
   const wsRef = useRef&lt;WebSocket | null&gt;(null);
 
   const connect = useCallback(() => {
-    const ws = new WebSocket(`ws://localhost:3001/ws?token=${token}`);
+    const ws = new WebSocket(`ws://localhost:3001/ws?token=\${token}`);
     
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
