@@ -27,6 +27,13 @@ export function LoginPage() {
   return (
     <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
+        <div className="flex justify-center mb-4">
+          <img
+            src="/logo.png"
+            alt="Retro Engineering"
+            className="h-12 w-auto"
+          />
+        </div>
         <h1 className="text-3xl font-bold text-white text-center mb-2">Retro</h1>
         <p className="text-gray-400 text-center mb-8">Sign in to your dashboard</p>
 
