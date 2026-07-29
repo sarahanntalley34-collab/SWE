@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
+import { Sentry } from "~/lib/sentry";
 import appCss from "~/styles/app.css?url";
 
 const SITE_TITLE = "Retro Engineering";
@@ -37,7 +38,26 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <RootDocument>
-      <Outlet />
+      <Sentry.ErrorBoundary
+        fallback={
+          <div className="flex min-h-dvh flex-col items-center justify-center px-6 text-center">
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+              Something went wrong
+            </h1>
+            <p className="mt-4 max-w-md text-lg text-gray-600 dark:text-gray-400">
+              An unexpected error occurred. Please try refreshing the page.
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="mt-8 inline-flex items-center rounded-lg bg-gray-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
+            >
+              Refresh page
+            </button>
+          </div>
+        }
+      >
+        <Outlet />
+      </Sentry.ErrorBoundary>
     </RootDocument>
   );
 }

@@ -319,6 +319,20 @@ function Home() {
         </div>
       </Section>
 
+      {/* ── Test Sentry (dev only) ────────────────────────────────────────── */}
+      {process.env.NODE_ENV !== "production" && (
+        <div className="fixed bottom-4 right-4 z-50">
+          <button
+            onClick={() => {
+              throw new Error("Sentry test error from homepage button");
+            }}
+            className="rounded-lg bg-red-600 px-4 py-2 text-xs font-semibold text-white shadow-lg hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+          >
+            Test Sentry
+          </button>
+        </div>
+      )}
+
       {/* ── Footer ────────────────────────────────────────────────────────── */}
       <footer className="border-t border-gray-200 px-6 py-8 dark:border-gray-800 sm:px-8 lg:px-12">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-gray-500 dark:text-gray-500 sm:flex-row">
