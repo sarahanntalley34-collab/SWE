@@ -6,7 +6,7 @@ const auth = new Hono();
 
 const DEMO_MODE = !process.env.DATABASE_URL;
 
-const DEMO_USERS: Record<string, { id: number; email: string; password: string; role: string }> = {
+const DEMO_USERS: Record<string, { id: number; email: string; password: string; role: "admin" | "viewer" }> = {
   "admin@demo.com": { id: 1, email: "admin@demo.com", password: "password123", role: "admin" },
   "viewer@demo.com": { id: 2, email: "viewer@demo.com", password: "password123", role: "viewer" },
 };

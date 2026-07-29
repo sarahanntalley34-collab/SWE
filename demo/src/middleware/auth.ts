@@ -1,5 +1,6 @@
 import type { Context, Next } from "hono";
 import jwt from "jsonwebtoken";
+import * as Sentry from "@sentry/bun";
 
 const JWT_SECRET = process.env.JWT_SECRET || "retro-demo-secret-change-in-production";
 
@@ -24,6 +25,10 @@ export async function authMiddleware(c: Context, next: Next) {
   const authHeader = c.req.header("Authorization");
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    Sentry.captureException(
+      new Error("Auth failure: Missing or invalid Authorization header"),
+      { level: "warning" }
+    );
     return c.json({ error: "Missing or invalid Authorization header" }, 401);
   }
 
@@ -34,6 +39,10 @@ export async function authMiddleware(c: Context, next: Next) {
     c.set("user", payload);
     await next();
   } catch {
+    Sentry.captureException(
+      new Error("Auth failure: Invalid or expired token"),
+      { level: "warning" }
+    );
     return c.json({ error: "Invalid or expired token" }, 401);
   }
 }

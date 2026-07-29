@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
+    "@sentry/bun": "^10.69.0",
     "bcryptjs": "^2.4.3",
     "drizzle-orm": "^0.40.0",
     "hono": "^4.7.5",
