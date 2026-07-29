@@ -29,7 +29,10 @@ export const Route = createRootRoute({
       { name: "twitter:title", content: SITE_TITLE },
       { name: "twitter:description", content: SITE_DESCRIPTION },
     ],
-    links: [{ rel: "stylesheet", href: appCss }],
+    links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon.png" },
+    ],
   }),
   notFoundComponent: () => <div>Page not found</div>,
   component: RootComponent,
@@ -68,7 +71,38 @@ function RootDocument({ children }: { children: ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="flex min-h-dvh flex-col">
+        <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur-sm dark:border-gray-800 dark:bg-gray-950/80">
+          <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3 sm:px-8 lg:px-12">
+            <a href="/" aria-label="Retro Engineering home" className="inline-flex items-center">
+              <img
+                src="/logo.png"
+                alt="Retro Engineering"
+                className="h-8 w-auto sm:h-10"
+              />
+            </a>
+            <div className="flex items-center gap-6 text-sm font-medium">
+              <a
+                href="/services"
+                className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
+              >
+                Services
+              </a>
+              <a
+                href="/contact"
+                className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
+              >
+                Contact
+              </a>
+              <a
+                href="/demo"
+                className="rounded-lg bg-gray-900 px-4 py-2 text-white hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 transition-colors"
+              >
+                Demo
+              </a>
+            </div>
+          </nav>
+        </header>
         {children}
         <Scripts />
       </body>
