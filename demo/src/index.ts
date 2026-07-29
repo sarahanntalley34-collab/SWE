@@ -1,9 +1,19 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import * as Sentry from "@sentry/bun";
 import authRoutes from "./routes/auth";
 import metricsRoutes from "./routes/metrics";
 import eventsRoutes from "./routes/events";
 import { handleWebSocketOpen, handleWebSocketClose } from "./ws";
+
+// ── Sentry ─────────────────────────────────────────────────────────────────────
+
+Sentry.init({
+  dsn: "https://24908d5fb6f273b1f7a0aa7038387ce4@o4511724818464768.ingest.us.sentry.io/4511724822790144",
+  environment: process.env.NODE_ENV === "production" ? "production" : "development",
+  tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
+  integrations: [Sentry.bunServerIntegration()],
+});
 
 const app = new Hono();
 
@@ -21,6 +31,14 @@ app.use(
 // ── Health check ──────────────────────────────────────────────────────────────
 
 app.get("/health", (c) => c.json({ status: "ok", timestamp: new Date().toISOString() }));
+
+// ── Sentry test endpoint (non-production only) ─────────────────────────────────
+
+if (process.env.NODE_ENV !== "production") {
+  app.get("/api/test-sentry", () => {
+    throw new Error("Sentry test error — verify this appears in the Sentry dashboard");
+  });
+}
 
 // ── API routes ────────────────────────────────────────────────────────────────
 
