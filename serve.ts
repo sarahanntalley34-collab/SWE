@@ -18,6 +18,7 @@ import handler from "./dist/server/server.js";
 const PORT = 3000;
 const HOST = "0.0.0.0";
 const CLIENT_DIR = `${import.meta.dir}/dist/client`;
+const DEMO_BACKEND = "http://localhost:3001";
 
 // Free PORT regardless of which user owns the current listener. lsof runs under
 // sudo so it can see (and the kill can signal) a process owned by another user;
@@ -40,11 +41,32 @@ for (let attempt = 1; ; attempt++) {
       port: PORT,
       hostname: HOST,
       async fetch(req) {
-        const { pathname } = new URL(req.url);
+        const url = new URL(req.url);
+        const { pathname } = url;
+
+        // Demo proxy: forward /demo/* to the demo backend
+        if (pathname.startsWith("/demo")) {
+          const upstreamPath = pathname.slice("/demo".length) || "/";
+          const upstreamUrl = `${DEMO_BACKEND}${upstreamPath}`;
+          const upstreamReq = new Request(upstreamUrl, {
+            method: req.method,
+            headers: req.headers,
+            body: req.method !== "GET" && req.method !== "HEAD" ? req.body : undefined,
+          });
+          try {
+            return await fetch(upstreamReq);
+          } catch {
+            return new Response("Demo backend unavailable", { status: 502 });
+          }
+        }
+
+        // Static files
         if (pathname !== "/") {
           const file = Bun.file(CLIENT_DIR + pathname);
           if (await file.exists()) return new Response(file);
         }
+
+        // SSR fallback
         return (
           handler as { fetch: (r: Request) => Response | Promise<Response> }
         ).fetch(req);
