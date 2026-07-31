@@ -1,3 +1,4 @@
+import { join } from "node:path";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import * as Sentry from "@sentry/bun";
@@ -46,21 +47,56 @@ app.route("/api/auth", authRoutes);
 app.route("/api/metrics", metricsRoutes);
 app.route("/api/events", eventsRoutes);
 
+// ── Static file serving ──────────────────────────────────────────────────────
+
+const distPath = join(import.meta.dir, "..", "client", "dist");
+
+function serveStatic(pathname: string): Response {
+  // Strip /demo prefix if present (for proxied requests)
+  let filePath = pathname;
+  if (filePath.startsWith("/demo/")) {
+    filePath = filePath.slice(5); // remove "/demo" prefix, keep leading "/"
+  } else if (filePath === "/demo") {
+    filePath = "/";
+  }
+
+  // Resolve to a file path under dist/
+  const resolved = filePath === "/" || filePath === ""
+    ? join(distPath, "index.html")
+    : join(distPath, filePath.replace(/^\//, ""));
+
+  const file = Bun.file(resolved);
+  return new Response(file);
+}
+
 // ── WebSocket server ──────────────────────────────────────────────────────────
 
 const server = Bun.serve<string>({
   port: 3001,
   fetch(req, srv) {
-    // Handle WebSocket upgrade: extract token from URL and pass via data
     const url = new URL(req.url);
-    if (url.pathname === "/ws") {
+    const pathname = url.pathname;
+
+    // Handle WebSocket upgrade: extract token from URL and pass via data
+    if (pathname === "/ws") {
       const token = url.searchParams.get("token") || "";
       if (srv.upgrade(req, { data: token })) {
         return; // upgraded — response handled by Bun
       }
       return new Response("WebSocket upgrade failed", { status: 400 });
     }
-    // Fall through to Hono for all other routes
+
+    // Serve static files for GET requests outside API/health/ws paths
+    if (
+      req.method === "GET" &&
+      !pathname.startsWith("/api/") &&
+      pathname !== "/health" &&
+      pathname !== "/ws"
+    ) {
+      return serveStatic(pathname);
+    }
+
+    // Fall through to Hono for API, health, and other routes
     return app.fetch(req);
   },
   websocket: {
