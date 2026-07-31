@@ -18,6 +18,9 @@ Sentry.init({
 
 const app = new Hono();
 
+// Export for testing
+export { app, serveStatic };
+
 // ── CORS ──────────────────────────────────────────────────────────────────────
 
 app.use(
@@ -71,47 +74,50 @@ function serveStatic(pathname: string): Response {
 
 // ── WebSocket server ──────────────────────────────────────────────────────────
 
-const server = Bun.serve<string>({
-  port: 3001,
-  fetch(req, srv) {
-    const url = new URL(req.url);
-    const pathname = url.pathname;
+// Only start the server when this module is the entry point (not when imported for testing)
+if (import.meta.main) {
+  const server = Bun.serve<string>({
+    port: 3001,
+    fetch(req, srv) {
+      const url = new URL(req.url);
+      const pathname = url.pathname;
 
-    // Handle WebSocket upgrade: extract token from URL and pass via data
-    if (pathname === "/ws") {
-      const token = url.searchParams.get("token") || "";
-      if (srv.upgrade(req, { data: token })) {
-        return; // upgraded — response handled by Bun
+      // Handle WebSocket upgrade: extract token from URL and pass via data
+      if (pathname === "/ws") {
+        const token = url.searchParams.get("token") || "";
+        if (srv.upgrade(req, { data: token })) {
+          return; // upgraded — response handled by Bun
+        }
+        return new Response("WebSocket upgrade failed", { status: 400 });
       }
-      return new Response("WebSocket upgrade failed", { status: 400 });
-    }
 
-    // Serve static files for GET requests outside API/health/ws paths
-    if (
-      req.method === "GET" &&
-      !pathname.startsWith("/api/") &&
-      pathname !== "/health" &&
-      pathname !== "/ws"
-    ) {
-      return serveStatic(pathname);
-    }
+      // Serve static files for GET requests outside API/health/ws paths
+      if (
+        req.method === "GET" &&
+        !pathname.startsWith("/api/") &&
+        pathname !== "/health" &&
+        pathname !== "/ws"
+      ) {
+        return serveStatic(pathname);
+      }
 
-    // Fall through to Hono for API, health, and other routes
-    return app.fetch(req);
-  },
-  websocket: {
-    open(ws) {
-      handleWebSocketOpen(ws);
+      // Fall through to Hono for API, health, and other routes
+      return app.fetch(req);
     },
-    message(_ws, _message) {
-      // No client-to-server messages needed for this demo
+    websocket: {
+      open(ws) {
+        handleWebSocketOpen(ws);
+      },
+      message(_ws, _message) {
+        // No client-to-server messages needed for this demo
+      },
+      close(ws) {
+        handleWebSocketClose(ws);
+      },
     },
-    close(ws) {
-      handleWebSocketClose(ws);
-    },
-  },
-});
+  });
 
-console.log(`🚀 Retro Engineering API running on http://localhost:${server.port}`);
-console.log(`   WebSocket: ws://localhost:${server.port}/ws?token=<jwt>`);
-console.log(`   Health:    http://localhost:${server.port}/health`);
+  console.log(`🚀 Retro Engineering API running on http://localhost:${server.port}`);
+  console.log(`   WebSocket: ws://localhost:${server.port}/ws?token=<jwt>`);
+  console.log(`   Health:    http://localhost:${server.port}/health`);
+}
