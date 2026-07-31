@@ -13,7 +13,8 @@ export function useWebSocket(token: string | null) {
   const connect = useCallback(() => {
     if (!token) return;
 
-    const ws = new WebSocket(`ws://localhost:3001/ws?token=${token}`);
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const ws = new WebSocket(`${protocol}//${window.location.host}/demo/ws?token=${token}`);
     wsRef.current = ws;
 
     ws.onopen = () => {
