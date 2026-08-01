@@ -133,6 +133,13 @@ function DemoPage() {
               Services
             </a>
             <a
+              href="/blog"
+              aria-label="Read our blog"
+              className="hover:text-gray-700 dark:hover:text-gray-300"
+            >
+              Blog
+            </a>
+            <a
               href="/contact"
               className="hover:text-gray-700 dark:hover:text-gray-300"
             >
