@@ -6,7 +6,7 @@ import { DashboardPage } from './pages/DashboardPage';
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/demo">
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
