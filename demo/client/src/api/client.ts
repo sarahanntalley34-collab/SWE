@@ -1,6 +1,6 @@
 import type { LoginResponse, Event } from '../types';
 
-const BASE = '/api';
+const BASE = '/demo/api';
 
 function getToken(): string | null {
   return localStorage.getItem('token');

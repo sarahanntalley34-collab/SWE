@@ -1,4 +1,5 @@
 import { join } from "node:path";
+import { existsSync } from "node:fs";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import * as Sentry from "@sentry/bun";
@@ -68,8 +69,12 @@ function serveStatic(pathname: string): Response {
     ? join(distPath, "index.html")
     : join(distPath, filePath.replace(/^\//, ""));
 
-  const file = Bun.file(resolved);
-  return new Response(file);
+  // SPA fallback: if file doesn't exist, serve index.html
+  const indexPath = join(distPath, "index.html");
+  if (existsSync(resolved)) {
+    return new Response(Bun.file(resolved));
+  }
+  return new Response(Bun.file(indexPath));
 }
 
 // ── WebSocket server ──────────────────────────────────────────────────────────
