@@ -1,11 +1,14 @@
 import * as Sentry from "@sentry/react";
 
-const isProduction = process.env.NODE_ENV === "production";
-
-Sentry.init({
-  dsn: "https://2e05bb98bbea6685d50a76dace3e7f7a@o4511803722498048.ingest.us.sentry.io/4511804922658816",
-  environment: isProduction ? "production" : "development",
-  tracesSampleRate: isProduction ? 0.1 : 1.0,
-});
+// The client bundle imports this module through the root route. Keeping the
+// initialization here lets TanStack Start report render and route errors while
+// avoiding a second initialization during SSR.
+if (typeof window !== "undefined") {
+  Sentry.init({
+    dsn: "https://24908d5fb6f273b1f7a0aa7038387ce4@o4511724818464768.ingest.us.sentry.io/4511724822790144",
+    environment: "production",
+    tracesSampleRate: 0.1,
+  });
+}
 
 export { Sentry };
