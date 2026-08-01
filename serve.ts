@@ -40,11 +40,20 @@ for (let attempt = 1; ; attempt++) {
     Bun.serve({
       port: PORT,
       hostname: HOST,
-      async fetch(req) {
+      async fetch(req, server) {
         const url = new URL(req.url);
         const { pathname } = url;
 
-        // Demo proxy: forward /demo/* to the demo backend
+        // WebSocket proxy: /demo/ws → upstream demo backend
+        if (pathname === "/demo/ws") {
+          const token = url.searchParams.get("token") || "";
+          if (server.upgrade(req, { data: { type: "demo-ws", token } })) {
+            return; // upgraded
+          }
+          return new Response("WebSocket upgrade failed", { status: 400 });
+        }
+
+        // Demo proxy: forward /demo/* to the demo backend (regular HTTP)
         if (pathname.startsWith("/demo")) {
           const upstreamPath = pathname.slice("/demo".length) || "/";
           const upstreamUrl = `${DEMO_BACKEND}${upstreamPath}`;
@@ -70,6 +79,45 @@ for (let attempt = 1; ; attempt++) {
         return (
           handler as { fetch: (r: Request) => Response | Promise<Response> }
         ).fetch(req);
+      },
+      websocket: {
+        open(ws) {
+          const data = ws.data as { type?: string; token?: string } | undefined;
+          if (data?.type !== "demo-ws") return;
+          const token = data.token || "";
+
+          // Connect to the upstream demo backend WebSocket
+          const upstream = new WebSocket(
+            `ws://localhost:3001/ws?token=${encodeURIComponent(token)}`,
+          );
+          (ws as any).__upstream = upstream;
+
+          upstream.onmessage = (evt) => {
+            if (ws.readyState === WebSocket.OPEN) {
+              ws.send(
+                typeof evt.data === "string"
+                  ? evt.data
+                  : new Uint8Array(evt.data as ArrayBuffer),
+              );
+            }
+          };
+          upstream.onclose = () => {
+            if (ws.readyState === WebSocket.OPEN) ws.close();
+          };
+          upstream.onerror = () => {
+            if (ws.readyState === WebSocket.OPEN) ws.close();
+          };
+        },
+        message(ws, message) {
+          const upstream = (ws as any).__upstream as WebSocket | undefined;
+          if (upstream && upstream.readyState === WebSocket.OPEN) {
+            upstream.send(message);
+          }
+        },
+        close(ws) {
+          const upstream = (ws as any).__upstream as WebSocket | undefined;
+          if (upstream) upstream.close();
+        },
       },
     });
     break;
