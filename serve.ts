@@ -8,7 +8,14 @@
 // member's `bun run publish` runs as their own user), so publish never collides
 // with an already-running server. Every sandbox user has passwordless sudo, so
 // the takeover works across user boundaries.
+import * as Sentry from "@sentry/bun";
 import handler from "./dist/server/server.js";
+
+Sentry.init({
+  dsn: "https://24908d5fb6f273b1f7a0aa7038387ce4@o4511724818464768.ingest.us.sentry.io/4511724822790144",
+  environment: "production",
+  tracesSampleRate: 0.1,
+});
 
 // Pinned, NOT read from the environment. The published preview URL
 // (<label>.<PUBLIC_SITE_DOMAIN>) is reverse-proxied to 0.0.0.0:3000 inside the
@@ -55,7 +62,8 @@ for (let attempt = 1; ; attempt++) {
           });
           try {
             return await fetch(upstreamReq);
-          } catch {
+          } catch (error) {
+            Sentry.captureException(error);
             return new Response("Demo backend unavailable", { status: 502 });
           }
         }
@@ -67,9 +75,14 @@ for (let attempt = 1; ; attempt++) {
         }
 
         // SSR fallback
-        return (
-          handler as { fetch: (r: Request) => Response | Promise<Response> }
-        ).fetch(req);
+        try {
+          return await (
+            handler as { fetch: (r: Request) => Response | Promise<Response> }
+          ).fetch(req);
+        } catch (error) {
+          Sentry.captureException(error);
+          throw error;
+        }
       },
     });
     break;
