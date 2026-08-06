@@ -37,6 +37,14 @@ const products = [
     highlight: true,
   },
   {
+    name: "Engineering Sprint",
+    price: "$5,000",
+    description:
+      "Two-week dedicated sprint: architecture, feature build, code review, and deployment. Ideal for well-scoped projects.",
+    paymentLink: "https://buy.stripe.com/aFa00j1ad3CS4fw122gEg0e",
+    highlight: false,
+  },
+  {
     name: "Technical Audit",
     price: "$1,250",
     description: "Architecture review, code audit, recommendations report. 1 week.",
@@ -134,9 +142,9 @@ function Services() {
         <div className="mx-auto max-w-6xl">
           <SectionHeading>What we offer</SectionHeading>
           <p className="mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
-            Four ways to work with us — from quick sprints to ongoing partnerships.
+            Five ways to work with us — from quick sprints to ongoing partnerships.
           </p>
-          <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((product) => (
               <div
                 key={product.name}
@@ -296,11 +304,11 @@ function Services() {
             </a>
           </div>
           <a
-            href="mailto:hello@retro.engineering"
+            href="mailto:retro-engineering-71ae8222@ctomail.io"
             aria-label="Send us an email"
             className="hover:text-gray-700 dark:hover:text-gray-300"
           >
-            hello@retro.engineering
+            retro-engineering-71ae8222@ctomail.io
           </a>
         </div>
       </footer>

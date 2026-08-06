@@ -369,11 +369,11 @@ function Home() {
               </a>
             </div>
             <a
-              href="mailto:hello@retro.engineering"
+              href="mailto:retro-engineering-71ae8222@ctomail.io"
               aria-label="Send us an email"
               className="hover:text-gray-700 dark:hover:text-gray-300"
             >
-              hello@retro.engineering
+              retro-engineering-71ae8222@ctomail.io
             </a>
           </div>
         </div>

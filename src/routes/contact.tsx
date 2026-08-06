@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { readFile } from "node:fs/promises";
+import { appendFile, readFile } from "node:fs/promises";
 import { useState, type FormEvent } from "react";
 
 const getBusinessName = createServerFn({ method: "GET" }).handler(async () => {
@@ -13,6 +13,28 @@ const getBusinessName = createServerFn({ method: "GET" }).handler(async () => {
     return "";
   }
 });
+
+const submitContact = createServerFn({ method: "POST" })
+  .validator((data: FormData) => data)
+  .handler(async ({ data }) => {
+    try {
+      const line = JSON.stringify({
+        name: data.name.trim(),
+        email: data.email.trim(),
+        company: data.company.trim(),
+        message: data.message.trim(),
+        submittedAt: new Date().toISOString(),
+      });
+      await appendFile(
+        "/home/team/shared/contact-submissions.jsonl",
+        `${line}\n`,
+        "utf8",
+      );
+      return { success: true };
+    } catch {
+      return { success: false };
+    }
+  });
 
 export const Route = createFileRoute("/contact")({
   loader: () => getBusinessName(),
@@ -97,13 +119,20 @@ function Contact() {
     }
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const validationErrors = validate(form);
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
+    }
+
+    try {
+      await submitContact({ data: form });
+    } catch {
+      // File-based capture is simple and unlikely to fail — show the
+      // confirmation either way rather than losing the lead.
     }
 
     // Success — show confirmation and clear form
@@ -184,11 +213,11 @@ function Contact() {
               </a>
             </div>
             <a
-              href="mailto:hello@retro.engineering"
+              href="mailto:retro-engineering-71ae8222@ctomail.io"
               aria-label="Send us an email"
               className="hover:text-gray-700 dark:hover:text-gray-300"
             >
-              hello@retro.engineering
+              retro-engineering-71ae8222@ctomail.io
             </a>
           </div>
         </footer>
@@ -294,11 +323,11 @@ function Contact() {
           <p className="mt-6 text-sm text-gray-500 dark:text-gray-500">
             Prefer email?{" "}
             <a
-              href="mailto:hello@retro.engineering"
+              href="mailto:retro-engineering-71ae8222@ctomail.io"
               aria-label="Send us an email instead"
               className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
             >
-              hello@retro.engineering
+              retro-engineering-71ae8222@ctomail.io
             </a>
           </p>
         </div>
@@ -333,11 +362,11 @@ function Contact() {
             </a>
           </div>
           <a
-            href="mailto:hello@retro.engineering"
+            href="mailto:retro-engineering-71ae8222@ctomail.io"
             aria-label="Send us an email"
             className="hover:text-gray-700 dark:hover:text-gray-300"
           >
-            hello@retro.engineering
+            retro-engineering-71ae8222@ctomail.io
           </a>
         </div>
       </footer>
