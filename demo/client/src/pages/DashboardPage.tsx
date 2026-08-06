@@ -4,6 +4,8 @@ import { Header } from '../components/Header';
 import { MetricCard } from '../components/MetricCard';
 import { MetricsChart } from '../components/MetricsChart';
 import { ActivityFeed } from '../components/ActivityFeed';
+import { SystemHealth } from '../components/SystemHealth';
+import { ErrorLog } from '../components/ErrorLog';
 
 export function DashboardPage() {
   const { user, token } = useAuth();
@@ -65,6 +67,12 @@ export function DashboardPage() {
               ]}
             />
           )}
+        </div>
+
+        {/* Real-time dashboard feeds */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <SystemHealth />
+          <ErrorLog />
         </div>
 
         {/* Activity Feed — admin only */}
