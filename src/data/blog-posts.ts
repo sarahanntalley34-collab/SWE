@@ -519,5 +519,61 @@ function useWebSocket(token: string) {
 <hr>
 
 <p><em>Retro Engineering is a team of 3 senior engineers. We ship production-quality software — architecture through deployment — without the overhead. <a href="/services">See our services</a> or <a href="/contact">get in touch</a>.</em></p>`
-  }
+  },
+  {
+    slug: "what-to-expect-two-week-engineering-sprint",
+    title: "What to Expect from a Two-Week Engineering Sprint",
+    date: "2026-08-06",
+    excerpt: "A practical guide to the decisions, deliverables, and collaboration that make a focused two-week engineering sprint useful for founders and product teams.",
+    tags: ["Engineering", "Sprints", "Process"],
+    content: `<p>A two-week engineering sprint is a short, focused engagement built around one clearly defined outcome. It is not a compressed version of an entire product build, and it is not two weeks of disappearing engineers. Done well, it gives you a working slice of product, a clearer technical path, and a realistic basis for deciding what to do next.</p>
+
+<h2>What Is an Engineering Sprint—and When Does It Make Sense?</h2>
+
+<p>A sprint brings a small engineering team around a bounded problem: for example, shipping an onboarding flow, connecting a payment provider, or turning a validated workflow into a usable internal tool. The scope is agreed before the clock starts, and the team works in short feedback loops so there are fewer surprises at the end.</p>
+
+<p>It can be a good fit when you have a specific feature or risk to address, a product direction that is clear enough to test, or a team that needs experienced engineering capacity without making a permanent hire. It is also useful when you want to evaluate how a team communicates and ships before committing to a longer engagement.</p>
+
+<p>A sprint is different from hiring full-time. A full-time hire makes sense when engineering is a continuing core capability, you have enough ongoing work to support the role, and you are prepared to invest in recruiting, onboarding, management, and team development. A sprint is more appropriate when the need is immediate and scoped, or when you are still learning what the product requires. It can provide evidence for a later hiring decision, but it should not be used to avoid making that decision indefinitely.</p>
+
+<h2>Week 1: Architecture, Spec, and Setup</h2>
+
+<p>The first week is about reducing ambiguity before we build. That does not mean spending five days in meetings. It means asking the questions that are cheaper to answer on paper than in code.</p>
+
+<p>We start by clarifying the user problem, the success condition, and what is explicitly out of scope. We review any existing product, designs, data model, and constraints. Then we choose an implementation approach that fits the problem rather than reaching for the most elaborate architecture available.</p>
+
+<p>By the middle of the week, you should have a concise implementation plan: the user flow, key technical decisions, known risks, assumptions, and a set of small, reviewable tasks. If a requirement is unclear or the proposed outcome is too large for two weeks, we say so and help narrow it.</p>
+
+<p>In parallel, we set up the working environment. That may include repository access, local development, deployment environments, authentication, database migrations, third-party credentials, and a basic test and review workflow. We prefer to expose setup problems early, while there is still time to solve them.</p>
+
+<p>By the end of week one, the client should have an agreed scope and definition of done, an architecture and delivery plan, a running development setup, and—where practical—a first thin slice or technical proof that validates the riskiest assumption. You should understand what will be built in week two and why.</p>
+
+<h2>Week 2: Build, Review, and Ship</h2>
+
+<p>With the path clear, week two is for implementation. We build in small increments rather than waiting for one large handoff. That gives you something concrete to review and gives us a chance to correct misunderstandings while they are still inexpensive.</p>
+
+<p>Expect working software, not just screenshots. Depending on the scope, that could include a responsive interface, API endpoints, data persistence, integrations, validation, error states, and tests around the important behavior. We keep the code in version control and make decisions visible through pull requests and short written updates.</p>
+
+<p>Review is part of the build, not a ceremony at the end. We check the work against the agreed acceptance criteria, address edge cases, and leave room for a client review or demo. Before shipping, we verify the production path, document any configuration steps, and deploy to the agreed environment. The handoff should include the code, a summary of what changed, notes on anything deliberately deferred, and a sensible next-step backlog.</p>
+
+<h2>Realistic Outcomes: What a Sprint Can—and Cannot—Do</h2>
+
+<p>A good sprint can deliver one meaningful, production-ready slice; remove a high-risk technical unknown; establish a maintainable foundation; or turn a loose idea into software that users can react to. It can also give stakeholders a much better estimate for the next phase because the estimate is based on evidence rather than optimism.</p>
+
+<p>It cannot deliver an entire mature SaaS product in two weeks. It will not resolve every product question, build every integration, or guarantee traction. Some work—security hardening, accessibility review, performance tuning, operational monitoring, content, and additional user research—may need to follow the initial release. Being explicit about those boundaries is a sign of good planning, not a lack of ambition.</p>
+
+<h2>How to Prepare as a Client</h2>
+
+<p>You do not need a perfect technical specification. You do need enough product context to make decisions quickly. Bring a clear description of the user and problem, examples of the current workflow, and a definition of what success looks like. A rough sketch or existing prototype is often more useful than a long document.</p>
+
+<p>Before the sprint begins, identify the person who can answer product questions and approve tradeoffs. Gather repository, hosting, database, analytics, and third-party service access. Confirm who owns the relevant accounts and how credentials will be shared securely. If there are designs, brand guidelines, legal constraints, or data-handling requirements, make those available up front.</p>
+
+<p>Finally, protect time for feedback. A sprint moves quickly because decisions do too. A short daily check-in or prompt response to a focused question can prevent a day of rework. The best client contribution is not micromanaging implementation; it is being available to clarify priorities and review the result.</p>
+
+<h2>A Sprint Should Make the Next Decision Easier</h2>
+
+<p>The point of a two-week sprint is not to create artificial urgency. It is to create useful momentum with clear boundaries. At the end, you should know what works, what shipped, what remains, and what the next investment should be.</p>
+
+<p>If you have a well-scoped feature or technical problem you want to move from “we should” to working software, <a href="/services">see our services</a>. We can talk through whether a sprint is the right shape for the work—and if it is not, we will say that plainly.</p>`
+  },
 ];
