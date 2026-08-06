@@ -6,7 +6,10 @@ import * as Sentry from "@sentry/bun";
 import authRoutes from "./routes/auth";
 import metricsRoutes from "./routes/metrics";
 import eventsRoutes from "./routes/events";
+import healthDashboardRoutes from "./routes/health-dashboard";
+import errorLogRoutes from "./routes/error-log";
 import { handleWebSocketOpen, handleWebSocketClose } from "./ws";
+import { addRealtimeClient, removeRealtimeClient } from "./realtime";
 
 // ── Sentry ─────────────────────────────────────────────────────────────────────
 
@@ -50,6 +53,8 @@ if (process.env.NODE_ENV !== "production") {
 app.route("/api/auth", authRoutes);
 app.route("/api/metrics", metricsRoutes);
 app.route("/api/events", eventsRoutes);
+app.route("/api/health-dashboard", healthDashboardRoutes);
+app.route("/api/error-log", errorLogRoutes);
 
 // ── Static file serving ──────────────────────────────────────────────────────
 
@@ -87,12 +92,17 @@ if (import.meta.main) {
       const url = new URL(req.url);
       const pathname = url.pathname;
 
-      // Handle WebSocket upgrade: extract token from URL and pass via data
+      // Dedicated dashboard feeds are intentionally public demo streams.
+      if (pathname === "/ws/health" || pathname === "/ws/errors") {
+        const kind = pathname === "/ws/health" ? "health" : "errors";
+        if (srv.upgrade(req, { data: kind })) return;
+        return new Response("WebSocket upgrade failed", { status: 400 });
+      }
+
+      // Handle existing authenticated metrics upgrade.
       if (pathname === "/ws") {
         const token = url.searchParams.get("token") || "";
-        if (srv.upgrade(req, { data: token })) {
-          return; // upgraded — response handled by Bun
-        }
+        if (srv.upgrade(req, { data: token })) return;
         return new Response("WebSocket upgrade failed", { status: 400 });
       }
 
@@ -101,7 +111,7 @@ if (import.meta.main) {
         req.method === "GET" &&
         !pathname.startsWith("/api/") &&
         pathname !== "/health" &&
-        pathname !== "/ws"
+        !pathname.startsWith("/ws")
       ) {
         return serveStatic(pathname);
       }
@@ -111,12 +121,17 @@ if (import.meta.main) {
     },
     websocket: {
       open(ws) {
+        if (ws.data === "health" || ws.data === "errors") {
+          addRealtimeClient(ws, ws.data);
+          return;
+        }
         handleWebSocketOpen(ws);
       },
       message(_ws, _message) {
         // No client-to-server messages needed for this demo
       },
       close(ws) {
+        removeRealtimeClient(ws);
         handleWebSocketClose(ws);
       },
     },
