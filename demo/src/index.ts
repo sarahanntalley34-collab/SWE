@@ -8,6 +8,8 @@ import metricsRoutes from "./routes/metrics";
 import eventsRoutes from "./routes/events";
 import healthDashboardRoutes from "./routes/health-dashboard";
 import errorLogRoutes from "./routes/error-log";
+import usersRoutes from "./routes/users";
+import settingsRoutes from "./routes/settings";
 import { handleWebSocketOpen, handleWebSocketClose } from "./ws";
 import { addRealtimeClient, removeRealtimeClient } from "./realtime";
 
@@ -55,6 +57,8 @@ app.route("/api/metrics", metricsRoutes);
 app.route("/api/events", eventsRoutes);
 app.route("/api/health-dashboard", healthDashboardRoutes);
 app.route("/api/error-log", errorLogRoutes);
+app.route("/api/users", usersRoutes);
+app.route("/api/settings", settingsRoutes);
 
 // ── Static file serving ──────────────────────────────────────────────────────
 
