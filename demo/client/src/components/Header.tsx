@@ -1,12 +1,11 @@
 import { useAuth } from '../hooks/useAuth';
-
 interface HeaderProps {
-  connected: boolean;
+  /** Optional live-connection indicator (used by the realtime dashboard). */
+  connected?: boolean;
 }
-
 export function Header({ connected }: HeaderProps) {
   const { user, logout } = useAuth();
-
+  const showStatus = connected !== undefined;
   return (
     <header className="flex items-center justify-between px-6 py-4 border-b border-gray-800 bg-gray-900">
       <div className="flex items-center gap-3">
@@ -16,17 +15,20 @@ export function Header({ connected }: HeaderProps) {
           className="h-7 w-auto"
         />
         <h1 className="text-xl font-bold text-white">Retro Engineering</h1>
-        <span
-          className={`inline-block w-2.5 h-2.5 rounded-full transition-colors duration-300 ${
-            connected ? 'bg-emerald-500' : 'bg-red-500'
-          }`}
-          title={connected ? 'Connected' : 'Disconnected'}
-        />
-        <span className="text-xs text-gray-500">
-          {connected ? 'Live' : 'Reconnecting...'}
-        </span>
+        {showStatus && (
+          <>
+            <span
+              className={`inline-block w-2.5 h-2.5 rounded-full transition-colors duration-300 ${
+                connected ? 'bg-emerald-500' : 'bg-red-500'
+              }`}
+              title={connected ? 'Connected' : 'Disconnected'}
+            />
+            <span className="text-xs text-gray-500">
+              {connected ? 'Live' : 'Reconnecting...'}
+            </span>
+          </>
+        )}
       </div>
-
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-300">{user?.email}</span>
