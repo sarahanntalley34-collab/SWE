@@ -1,6 +1,7 @@
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
+import type { IncomingMessage } from "node:http";
 import { defineConfig, type Plugin } from "vite";
 import tsConfigPaths from "vite-tsconfig-paths";
 
@@ -8,6 +9,16 @@ import tsConfigPaths from "vite-tsconfig-paths";
 // server serves the newsletter API through a tiny middleware here (serve.ts
 // does the same for the built site).
 function newsletterApiPlugin(): Plugin {
+  /** Collects the request body of a connect-style middleware request. */
+  function readBody(req: IncomingMessage): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const chunks: Buffer[] = [];
+      req.on("data", (chunk) => chunks.push(chunk as Buffer));
+      req.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
+      req.on("error", reject);
+    });
+  }
+
   return {
     name: "newsletter-api",
     configureServer(server) {
@@ -27,6 +38,51 @@ function newsletterApiPlugin(): Plugin {
         } catch {
           res.statusCode = 500;
           res.end(JSON.stringify({ error: "Failed to read subscribers" }));
+        }
+      });
+
+      server.middlewares.use("/api/newsletter/pending-welcome", async (req, res) => {
+        if (req.method !== "GET") {
+          res.statusCode = 405;
+          res.end(JSON.stringify({ error: "Method not allowed" }));
+          return;
+        }
+        try {
+          const { GET: pendingWelcomeGet } = await import(
+            "./src/routes/api/newsletter-pending-welcome"
+          );
+          const data = await pendingWelcomeGet();
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify(await data.json()));
+        } catch {
+          res.statusCode = 500;
+          res.end(JSON.stringify({ error: "Failed to list pending welcome emails" }));
+        }
+      });
+
+      server.middlewares.use("/api/newsletter/mark-welcome-sent", async (req, res) => {
+        if (req.method !== "POST") {
+          res.statusCode = 405;
+          res.end(JSON.stringify({ error: "Method not allowed" }));
+          return;
+        }
+        try {
+          const { POST: markWelcomeSentPost } = await import(
+            "./src/routes/api/newsletter-mark-welcome-sent"
+          );
+          const body = await readBody(req);
+          const response = await markWelcomeSentPost(
+            new Request("http://localhost/api/newsletter/mark-welcome-sent", {
+              method: "POST",
+              body,
+            }),
+          );
+          res.statusCode = response.status;
+          res.setHeader("Content-Type", "application/json");
+          res.end(await response.text());
+        } catch {
+          res.statusCode = 500;
+          res.end(JSON.stringify({ error: "Failed to mark welcome emails sent" }));
         }
       });
     },

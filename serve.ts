@@ -82,21 +82,60 @@ for (let attempt = 1; ; attempt++) {
         }
 
 // Newsletter API: subscribers list (JSON). TanStack Start 1.158 doesn't
-        // auto-serve files under routes/api, so dispatch it here explicitly.
-        if (pathname === "/api/newsletter-subscribers") {
-          if (req.method !== "GET") {
-            return Response.json({ error: "Method not allowed" }, { status: 405 });
-          }
-          try {
-            const { GET: newsletterSubscribersGet } = await import(
-              "./src/routes/api/newsletter-subscribers.ts"
-            );
-            return await newsletterSubscribersGet();
-          } catch (error) {
-            Sentry.captureException(error);
-            return Response.json({ error: "Failed to read subscribers" }, { status: 500 });
-          }
-        }
+// auto-serve files under routes/api, so dispatch it here explicitly.
+if (pathname === "/api/newsletter-subscribers") {
+  if (req.method !== "GET") {
+    return Response.json({ error: "Method not allowed" }, { status: 405 });
+  }
+  try {
+    const { GET: newsletterSubscribersGet } = await import(
+      "./src/routes/api/newsletter-subscribers.ts"
+    );
+    return await newsletterSubscribersGet();
+  } catch (error) {
+    Sentry.captureException(error);
+    return Response.json({ error: "Failed to read subscribers" }, { status: 500 });
+  }
+}
+
+// Newsletter API: pending welcome emails (JSON) — the lead's welcome-email
+// queue, backed by the DB (welcome_sent_at IS NULL).
+if (pathname === "/api/newsletter/pending-welcome") {
+  if (req.method !== "GET") {
+    return Response.json({ error: "Method not allowed" }, { status: 405 });
+  }
+  try {
+    const { GET: pendingWelcomeGet } = await import(
+      "./src/routes/api/newsletter-pending-welcome.ts"
+    );
+    return await pendingWelcomeGet();
+  } catch (error) {
+    Sentry.captureException(error);
+    return Response.json(
+      { error: "Failed to list pending welcome emails" },
+      { status: 500 },
+    );
+  }
+}
+
+// Newsletter API: mark welcome emails as sent (JSON POST).
+if (pathname === "/api/newsletter/mark-welcome-sent") {
+  if (req.method !== "POST") {
+    return Response.json({ error: "Method not allowed" }, { status: 405 });
+  }
+  try {
+    const { POST: markWelcomeSentPost } = await import(
+      "./src/routes/api/newsletter-mark-welcome-sent.ts"
+    );
+    return await markWelcomeSentPost(req);
+  } catch (error) {
+    Sentry.captureException(error);
+    return Response.json(
+      { error: "Failed to mark welcome emails sent" },
+      { status: 500 },
+    );
+  }
+}
 
         // Static files
         if (pathname !== "/") {
