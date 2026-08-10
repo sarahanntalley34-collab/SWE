@@ -13,25 +13,36 @@ import appCss from "~/styles/app.css?url";
 const SITE_TITLE = "Retro Engineering";
 const SITE_DESCRIPTION =
   "Retro Engineering — a small, focused team that ships production-quality software end-to-end. Architecture, backend, frontend, and testing.";
+const SITE_URL = "https://www.theretroengineering.com";
 
 export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: SITE_TITLE },
-      { name: "description", content: SITE_DESCRIPTION },
-      // Open Graph
-      { property: "og:title", content: SITE_TITLE },
-      { property: "og:description", content: SITE_DESCRIPTION },
-      { property: "og:type", content: "website" },
-      // Twitter Card
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: SITE_TITLE },
-      { name: "twitter:description", content: SITE_DESCRIPTION },
-    ],
-    links: [{ rel: "stylesheet", href: appCss }],
-  }),
+  head: ({ matches }) => {
+    // The root route's own match is always "/", so derive the current path
+    // from the deepest matched route (last element of `matches`).
+    const pathname = matches[matches.length - 1]?.pathname ?? "/";
+    const canonicalUrl = `${SITE_URL}${pathname}`;
+    return {
+      meta: [
+        { charSet: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { title: SITE_TITLE },
+        { name: "description", content: SITE_DESCRIPTION },
+        // Open Graph
+        { property: "og:title", content: SITE_TITLE },
+        { property: "og:description", content: SITE_DESCRIPTION },
+        { property: "og:type", content: "website" },
+        { property: "og:url", content: canonicalUrl },
+        // Twitter Card
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: SITE_TITLE },
+        { name: "twitter:description", content: SITE_DESCRIPTION },
+      ],
+      links: [
+        { rel: "stylesheet", href: appCss },
+        { rel: "canonical", href: canonicalUrl },
+      ],
+    };
+  },
   notFoundComponent: () => <div>Page not found</div>,
   component: RootComponent,
 });

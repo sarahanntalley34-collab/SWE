@@ -1,43 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { appendFile, readFile } from "node:fs/promises";
 import { useState, type FormEvent } from "react";
-
-const getBusinessName = createServerFn({ method: "GET" }).handler(async () => {
-  try {
-    const cfg = JSON.parse(await readFile("site.json", "utf8")) as {
-      businessName?: string;
-    };
-    return cfg.businessName?.trim() ?? "";
-  } catch {
-    return "";
-  }
-});
-
-const submitContact = createServerFn({ method: "POST" })
-  .validator((data: FormData) => data)
-  .handler(async ({ data }) => {
-    try {
-      const line = JSON.stringify({
-        name: data.name.trim(),
-        email: data.email.trim(),
-        company: data.company.trim(),
-        message: data.message.trim(),
-        submittedAt: new Date().toISOString(),
-      });
-      await appendFile(
-        "/home/team/shared/contact-submissions.jsonl",
-        `${line}\n`,
-        "utf8",
-      );
-      return { success: true };
-    } catch {
-      return { success: false };
-    }
-  });
+import { BUSINESS_NAME } from "~/lib/business";
 
 export const Route = createFileRoute("/contact")({
-  loader: () => getBusinessName(),
+  loader: () => BUSINESS_NAME,
   component: Contact,
 });
 
@@ -106,6 +72,7 @@ function Contact() {
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const handleChange = (field: keyof FormData, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -121,6 +88,7 @@ function Contact() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setSubmitError("");
     const validationErrors = validate(form);
 
     if (Object.keys(validationErrors).length > 0) {
@@ -129,10 +97,23 @@ function Contact() {
     }
 
     try {
-      await submitContact({ data: form });
-    } catch {
-      // File-based capture is simple and unlikely to fail — show the
-      // confirmation either way rather than losing the lead.
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) {
+        const data = (await res.json().catch(() => null)) as {
+          error?: string;
+        } | null;
+        throw new Error(data?.error || "Something went wrong. Please try again.");
+      }
+    } catch (err) {
+      // Only show the error message we control; never lose the lead silently.
+      setSubmitError(
+        err instanceof Error ? err.message : "Something went wrong. Please try again.",
+      );
+      return;
     }
 
     // Success — show confirmation and clear form
@@ -312,6 +293,11 @@ function Contact() {
             </div>
 
             {/* Submit */}
+            {submitError && (
+              <p className="text-sm text-red-600 dark:text-red-400" role="alert">
+                {submitError}
+              </p>
+            )}
             <button
               type="submit"
               className="inline-flex w-full items-center justify-center rounded-lg bg-gray-900 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 sm:w-auto"

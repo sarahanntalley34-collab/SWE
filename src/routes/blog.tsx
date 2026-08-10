@@ -1,22 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { readFile } from "node:fs/promises";
 import { NewsletterSignup } from "~/components/NewsletterSignup";
 import { blogPosts } from "~/data/blog-posts";
-
-const getBusinessName = createServerFn({ method: "GET" }).handler(async () => {
-  try {
-    const cfg = JSON.parse(await readFile("site.json", "utf8")) as {
-      businessName?: string;
-    };
-    return cfg.businessName?.trim() ?? "";
-  } catch {
-    return "";
-  }
-});
+import { BUSINESS_NAME } from "~/lib/business";
 
 export const Route = createFileRoute("/blog")({
-  loader: () => getBusinessName(),
+  loader: () => BUSINESS_NAME,
   component: Blog,
   head: () => ({
     meta: [
@@ -85,6 +73,9 @@ function Blog() {
   const businessName = Route.useLoaderData();
   const name = businessName || "Retro Engineering";
 
+  // Newest first (dates are ISO YYYY-MM-DD, so lexicographic == chronological).
+  const sortedPosts = [...blogPosts].sort((a, b) => b.date.localeCompare(a.date));
+
   return (
     <div className="min-h-dvh">
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
@@ -110,7 +101,7 @@ function Blog() {
             Thoughts and technical write-ups from the Retro Engineering team.
           </p>
           <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {blogPosts.map((post) => (
+            {sortedPosts.map((post) => (
               <div
                 key={post.slug}
                 className="flex flex-col rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition hover:shadow-md dark:border-gray-800 dark:bg-gray-950"

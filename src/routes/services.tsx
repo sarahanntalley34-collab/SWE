@@ -1,20 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { readFile } from "node:fs/promises";
-
-const getBusinessName = createServerFn({ method: "GET" }).handler(async () => {
-  try {
-    const cfg = JSON.parse(await readFile("site.json", "utf8")) as {
-      businessName?: string;
-    };
-    return cfg.businessName?.trim() ?? "";
-  } catch {
-    return "";
-  }
-});
+import { BUSINESS_NAME } from "~/lib/business";
 
 export const Route = createFileRoute("/services")({
-  loader: () => getBusinessName(),
+  loader: () => BUSINESS_NAME,
   component: Services,
 });
 

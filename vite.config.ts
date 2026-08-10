@@ -85,6 +85,29 @@ function newsletterApiPlugin(): Plugin {
           res.end(JSON.stringify({ error: "Failed to mark welcome emails sent" }));
         }
       });
+      server.middlewares.use("/api/contact", async (req, res) => {
+        if (req.method !== "POST") {
+          res.statusCode = 405;
+          res.end(JSON.stringify({ error: "Method not allowed" }));
+          return;
+        }
+        try {
+          const { POST: contactPost } = await import("./src/routes/api/contact");
+          const body = await readBody(req);
+          const response = await contactPost(
+            new Request("http://localhost/api/contact", {
+              method: "POST",
+              body,
+            }),
+          );
+          res.statusCode = response.status;
+          res.setHeader("Content-Type", "application/json");
+          res.end(await response.text());
+        } catch {
+          res.statusCode = 500;
+          res.end(JSON.stringify({ error: "Failed to save message" }));
+        }
+      });
     },
   };
 }
