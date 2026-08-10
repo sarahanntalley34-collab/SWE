@@ -771,4 +771,45 @@ function useWebSocket(token: string) {
 
 <p>If you have a well-scoped feature or technical problem you want to move from “we should” to working software, <a href="/services">see our services</a>. We can talk through whether a sprint is the right shape for the work—and if it is not, we will say that plainly.</p>`
   },
+  {
+    slug: "small-teams-ship-better-software",
+    title: "Why Small Teams Ship Better Software",
+    date: "2026-08-10",
+    excerpt: "Amazon's two-pizza rule isn't folklore — it's physics. Smaller teams communicate faster, own more of the stack, and ship working software while larger teams are still scheduling meetings. Here's why small engineering teams consistently outperform their larger counterparts, and what it means for founders building SaaS products.",
+    tags: ["Engineering", "Process", "Startups"],
+    content: `<p>There is a persistent myth in software that bigger teams ship faster. The logic sounds reasonable: more people, more output. But anyone who has worked on both sides knows the truth: after a surprisingly low threshold, adding engineers slows you down.</p>
+
+<p>Amazon institutionalized this as the two-pizza rule — no team should be larger than what two pizzas can feed. The reason is not about pizza. It is about communication overhead, ownership, and the physics of coordination.</p>
+
+<h2>The Math of Communication</h2>
+<p>Every person you add to a team creates new communication channels. A team of three has three one-to-one relationships. A team of six has fifteen. A team of ten has forty-five. Each channel is a potential misalignment — a decision that needs to be synchronized, a dependency that blocks someone, a meeting that burns an afternoon.</p>
+
+<p>Small teams do not escape communication overhead — they just keep it below the threshold where it consumes more time than building. When a team is small enough that everyone can fit in one room and one conversation, decisions happen in seconds instead of days.</p>
+
+<h2>Full-Stack Ownership</h2>
+<p>On a large team, specialization is necessary. One person owns the database schema. Another owns the API layer. A third owns the frontend components. This creates handoffs — the single most expensive transaction in software development.</p>
+
+<p>On a small team, one engineer owns a feature end-to-end: database, API, frontend, tests, deployment. There are no handoffs because there is nobody to hand off to. The loop from idea to working software is measured in hours, not sprint cycles.</p>
+
+<p>This is not about individual heroics. It is about reducing coordination cost to zero within a feature. When the person writing the React component also wrote the endpoint it calls and designed the table it reads from, they do not need a spec document to align with themselves.</p>
+
+<h2>Code Quality Improves</h2>
+<p>Counterintuitively, small teams often produce higher-quality code. Not because they are better engineers — because they feel the consequences of their decisions immediately.</p>
+
+<p>On a large team, the person who designs a bad API might never see the frontend code that suffers from it. The feedback loop is broken. On a small team, you write a bad abstraction at 10 AM and you are cursing yourself by 2 PM. The pain is immediate and personal, so you learn faster and build better.</p>
+
+<p>Code review on a small team is also more effective. When every reviewer understands the full system, they catch architectural issues that a specialist reviewer would miss. They know which part of the system this change will ripple into because they built that part too.</p>
+
+<h2>Velocity Without Burnout</h2>
+<p>There is a difference between working fast and working long. Small teams work fast because they remove the friction between steps — not because they work more hours. A feature that takes two weeks on a large team, with three handoffs and four review cycles, takes three days on a small team where one person owns the whole thing.</p>
+
+<p>This does not mean small teams never burn out — they can and they do. But the burnout comes from scope, not from coordination tax. And scope is something you can control.</p>
+
+<h2>What This Means for Founders</h2>
+<p>If you are building a SaaS product, resist the instinct to scale the team when things feel slow. The thing making you slow is more likely coordination overhead than a shortage of engineers. A small, focused team that ships end-to-end will outpace a larger team that spends half its time aligning.</p>
+
+<p>At <a href="/">Retro Engineering</a>, this is the whole model. A small team. Full-stack ownership. No handoffs. We ship production-quality software — architecture through deployment — in sprints measured in days, not months.</p>
+
+<p>If you are tired of large-team overhead and want to see what a small, focused team can deliver, <a href="/services">take a look at how we work</a>. We would rather show you shipped code than a project plan.</p>`
+  },
 ];
