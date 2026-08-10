@@ -81,6 +81,23 @@ for (let attempt = 1; ; attempt++) {
           }
         }
 
+// Newsletter API: subscribers list (JSON). TanStack Start 1.158 doesn't
+        // auto-serve files under routes/api, so dispatch it here explicitly.
+        if (pathname === "/api/newsletter-subscribers") {
+          if (req.method !== "GET") {
+            return Response.json({ error: "Method not allowed" }, { status: 405 });
+          }
+          try {
+            const { GET: newsletterSubscribersGet } = await import(
+              "./src/routes/api/newsletter-subscribers.ts"
+            );
+            return await newsletterSubscribersGet();
+          } catch (error) {
+            Sentry.captureException(error);
+            return Response.json({ error: "Failed to read subscribers" }, { status: 500 });
+          }
+        }
+
         // Static files
         if (pathname !== "/") {
           const file = Bun.file(CLIENT_DIR + pathname);

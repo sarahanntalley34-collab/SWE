@@ -1,8 +1,8 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { readFile } from "node:fs/promises";
+import { NewsletterSignup } from "~/components/NewsletterSignup";
 import { blogPosts } from "~/data/blog-posts";
-
 const getBusinessName = createServerFn({ method: "GET" }).handler(async () => {
   try {
     const cfg = JSON.parse(await readFile("site.json", "utf8")) as {
@@ -149,25 +149,17 @@ function BlogPostPage() {
         </article>
       </Section>
 
-      {/* ── CTA ────────────────────────────────────────────────────────── */}
+      {/* ── Newsletter CTA ──────────────────────────────────────────────── */}
       <Section className="text-center">
-        <div className="mx-auto max-w-2xl">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-            Want to work with us?
+        <div className="mx-auto max-w-lg">
+          <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl">
+            Get engineering insights in your inbox
           </h2>
-          <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
-            We build production-quality software end-to-end. Let's talk about
-            your project.
+          <p className="mt-3 text-base text-gray-600 dark:text-gray-400">
+            One email per week — practical advice on architecture, shipping, and
+            running a lean engineering team. No spam, unsubscribe anytime.
           </p>
-          <div className="mt-8">
-            <a
-              href="/contact"
-              aria-label="Get in touch"
-              className="inline-flex items-center rounded-lg bg-gray-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
-            >
-              Get in touch
-            </a>
-          </div>
+          <NewsletterSignup className="mt-6" />
         </div>
       </Section>
 
@@ -219,3 +211,4 @@ function BlogPostPage() {
     </div>
   );
 }
+
