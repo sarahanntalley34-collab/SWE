@@ -812,4 +812,54 @@ function useWebSocket(token: string) {
 
 <p>If you are tired of large-team overhead and want to see what a small, focused team can deliver, <a href="/services">take a look at how we work</a>. We would rather show you shipped code than a project plan.</p>`
   },
+  {
+    slug: "when-saas-needs-technical-audit",
+    title: "When Does Your SaaS Need a Technical Audit?",
+    date: "2026-08-10",
+    excerpt: "Slow deploys, mysterious outages, a codebase nobody wants to touch — these are the signs your SaaS has accumulated technical debt that is quietly taxing every feature you ship. Here's how to recognize when an audit is worth the cost, what a good one covers, and what it should hand you at the end.",
+    tags: ["Engineering", "Audit", "Startups"],
+    content: `<p>Every SaaS starts with good intentions. The first feature ships fast. The second ships faster. Then the third one takes twice as long, the fourth one introduces a bug that takes a week to find, and suddenly the codebase is something you dread opening. This is not a failure of effort. It is accumulated technical debt — and it has a cost you can measure.</p>
+
+<h2>The Signs That You Need an Audit</h2>
+<p>How do you know the debt is actually costing you? Look for these patterns:</p>
+
+<ul>
+<li><strong>Deploys that used to take minutes now take an afternoon.</strong> Every release is a gamble, and the rollback script gets more use than the feature.</li>
+<li><strong>Onboarding a new engineer takes weeks.</strong> If the architecture is only in someone's head, knowledge transfer is the bottleneck — and it walks out the door when that person leaves.</li>
+<li><strong>Bugs cluster in the same modules.</strong> High bug density in a small area of code is a signal the design is fighting the requirements, not serving them.</li>
+<li><strong>Features get slower to ship even though the team is getting more experienced.</strong> That is the purest measure of debt: velocity declining against a fixed team.</li>
+<li><strong>Tests are a second-class citizen.</strong> No test coverage, flaky tests, or a test suite nobody runs. The safety net is gone and nobody is admitting it.</li>
+</ul>
+
+<p>If two or more of these sound familiar, an audit is probably cheaper than the debt is.</p>
+
+<h2>What a Good Audit Covers</h2>
+<p>A technical audit is not a code review of everything you have ever written. It is a structured assessment with a clear scope. A serious one covers four areas:</p>
+
+<p><strong>Architecture.</strong> Are the boundaries between frontend, backend, and database clean? Can you swap a third-party service without rewriting everything? Is the data model shaped for the way the product is actually used — or for how you imagined it in month one?</p>
+
+<p><strong>Security and data integrity.</strong> Auth, authorization, secrets management, input validation, dependency vulnerabilities. This is the area where "we'll fix it later" has the worst odds, because later never comes until the breach does.</p>
+
+<p><strong>Operational health.</strong> Logging, error tracking, monitoring, backups, deploy pipeline, rollback story. A system nobody can observe is a system nobody can operate — and it will fail at 3 AM, alone.</p>
+
+<p><strong>Code quality and test coverage.</strong> Not style nitpicks — structural quality. Duplicated logic, god objects, missing abstractions, and the test coverage that would let you refactor safely.</p>
+
+<h2>What You Should Get Back</h2>
+<p>An audit's value is only as good as what it hands you. A good audit ends with:</p>
+
+<ul>
+<li><strong>A prioritized findings list.</strong> Every issue ranked by severity and by the cost of fixing it now versus later. You should be able to work the list top-down and see the risk drop as you go.</li>
+<li><strong>Quick wins.</strong> The ten small fixes that eliminate whole classes of problems in a day.</li>
+<li><strong>A roadmap.</strong> The structural work, sequenced so nothing you fix gets undone by the next thing you build.</li>
+<li><strong>An honest risk assessment.</strong> Including the uncomfortable part — which of your systems would hurt most if they failed, and how likely that is.</li>
+</ul>
+
+<h2>When It's Not Worth It</h2>
+<p>Honesty cuts both ways. If you are pre-revenue and shipping your first version, you probably do not need an audit — you need momentum, and an audit would mostly tell you things you already know. Audits earn their keep when the product is working, users depend on it, and the team is trying to accelerate on top of a foundation that is slowing them down.</p>
+
+<h2>The Real Cost Question</h2>
+<p>Ask not "what does an audit cost?" but "what is the debt costing every month?" If the answer to the second question is bigger than the first, the decision makes itself. Most founders we talk to can feel the tax in their roadmap before they can name it — the audit is what turns the feeling into a number, and the number into a plan.</p>
+
+<p>At <a href="/">Retro Engineering</a> we run <a href="/services">technical audits</a> as a fixed-scope engagement — a focused look at architecture, security, operations, and code quality, ending with a prioritized findings list you can act on. We will also tell you plainly if we do not think you need one yet.</p>`
+  },
 ];
