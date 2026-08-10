@@ -372,11 +372,9 @@ function Home() {
       <footer className="border-t border-gray-200 px-6 py-8 dark:border-gray-800 sm:px-8 lg:px-12">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 sm:flex-row sm:justify-between">
           <a href="/" aria-label="Retro Engineering home" className="inline-flex items-center">
-            <img
-              src="/logo.png"
-              alt="Retro Engineering"
-              className="h-6 w-auto sm:h-8"
-            />
+            <span className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
+              Retro Engineering
+            </span>
           </a>
           <div className="flex flex-col items-center gap-4 text-sm text-gray-500 dark:text-gray-500 sm:flex-row">
             <p>&copy; {new Date().getFullYear()} {name}. All rights reserved.</p>
