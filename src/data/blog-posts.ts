@@ -898,4 +898,33 @@ function useWebSocket(token: string) {
 <p><em>At <a href="/">Retro Engineering</a> we offer an <a href="/services">engineering retainer</a> — a fixed monthly engagement for maintenance, small features, and keeping your product healthy after launch. If you are pre-launch, this post is probably not for you yet; come back when the product has users, because that is exactly when it starts to matter.</em></p>`,
   },
 
+  {
+    slug: "first-week-with-engineering-team",
+    title: "What Happens in Your First Week with a Small Engineering Team",
+    date: "2026-08-10",
+    excerpt: "Hiring an engineering team is a leap of faith — so here's exactly what the first week should look like, day by day. The kickoff, the first deployable slice, the code review you can actually read, and the red flags to watch for.",
+    tags: ["Process", "Founders", "Hiring"],
+    content: `<p>When you hand a product idea to an outside engineering team, you are making a bet: that they will turn your vague understanding of a problem into working software, on a schedule, without you having to babysit. That bet is a lot easier to make when you know what the first week should look like. Here is the shape of a good first week with a small, senior team — and the signs that it is going badly.</p>
+<h2>Day 0: Kickoff Is About Scope, Not Small Talk</h2>
+<p>The kickoff should end with a written spec, not a handshake. By the end of day one you should have: a plain-language description of what will be built, what is explicitly out of scope, the data the product needs to store, and the definition of done for the first slice. If the team pushes back on scope during kickoff, that is a good sign — senior engineers argue about scope because they have been burned by scope creep. If they agree to everything without questions, be suspicious.</p>
+<h2>Day 1–2: The First Deployable Slice</h2>
+<p>The fastest way to test an engineering relationship is to demand a small, real, deployable result early. Not a design mockup — a working slice: an endpoint returning real data, a page rendering real content, a build that runs. If the team can deliver a genuine pull request within the first two days, the rest of the engagement is likely to move at the same pace. If they cannot, the problems only compound.</p>
+<p>A good first PR has three properties. It is small enough to review in one sitting. It has tests or at least a documented verification path. And the code is readable by someone who did not write it — because the person reviewing it will be you, or your technical advisor, or whoever inherits the codebase.</p>
+<h2>Mid-Week: Code Review You Can Read</h2>
+<p>By the middle of the first week you should have seen a pull request, a diff, and a review. This matters more than the code itself: it is proof the team follows a process you can audit. Look for meaningful review comments — questions about edge cases, suggestions about structure — not a rubber-stamp approval. The quality of the review conversation tells you more about the team than their portfolio ever will.</p>
+<h2>By Friday: What You Should Have</h2>
+<ul>
+<li><strong>A running build</strong> — something you can open in a browser, click, and break.</li>
+<li><strong>A review trail</strong> — every change landed through a pull request with comments, so the history is auditable.</li>
+<li><strong>A test story</strong> — at minimum, the critical paths covered; at best, a CI run you can watch.</li>
+<li><strong>A plan for week two</strong> — the spec revised with what was learned, sequenced into the next slices.</li>
+<li><strong>An honest status report</strong> — including what did not go as planned. A team that only reports wins is not reporting.</li>
+</ul>
+<h2>Red Flags</h2>
+<p>Watch for these in the first week: no pull requests by day three, code that cannot be run outside their machine, zero tests, communication that only happens when you ask, or scope that quietly expands without a conversation. Any one of these is survivable; two is a pattern.</p>
+<p>None of this requires you to be technical. It requires you to hold the team to visible, incremental, reviewable work — and a good team will welcome that, because it protects them too.</p>
+<hr>
+<p><em>At <a href="/">Retro Engineering</a> we work exactly this way: scoped sprints, small PRs, real reviews, and a deployable slice in the first days. <a href="/demo">Try our live demo</a> to see the kind of product we ship, or <a href="/services">see our services and pricing</a>.</em></p>`,
+  },
+
 ];
