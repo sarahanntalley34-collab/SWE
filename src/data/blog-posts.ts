@@ -9,6 +9,201 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "building-saas-dashboard-two-days",
+    title: "How We Built a SaaS Metrics Dashboard in Two Days",
+    date: "2026-08-09",
+    excerpt: "A real sprint recap: data models, seed data, and API endpoints on day one; stat cards, charts, a searchable users table, and settings on day two. What it takes to ship a working SaaS product in two focused days — and what it proves about small teams.",
+    tags: ["Engineering", "Case Study", "Process"],
+    content: `<p>Two days. One dashboard. A working SaaS metrics product with MRR tracking, user management, and a settings page — real code, a real database, and tests. Here's how the sprint actually went, what we decided along the way, and what it proves about what a small engineering team can deliver in a short sprint.</p>
+
+<h2>What We Built</h2>
+
+<p>A SaaS metrics dashboard — the kind a founder runs their business on. An overview screen with MRR, active users, and revenue stat cards plus trend charts. A users screen with a searchable, filterable table. A settings screen for profile and billing preferences. Two roles, admin and viewer, each seeing different data and controls.</p>
+
+<p>The stack was deliberately boring: <strong>React</strong> for the frontend, <strong>Hono</strong> for the API, <strong>recharts</strong> for charts, <strong>Tailwind</strong> for styling, and <strong>PostgreSQL</strong> for persistence. Nothing exotic. Every piece is mainstream, well-documented, and easy to extend — which matters more than novelty when the goal is shipping.</p>
+
+<h2>Day 1: Data Models, Seed Data, and API Endpoints</h2>
+
+<p>Day one was backend-heavy. We started with the data model — users, subscriptions, and daily metric snapshots — then seeded the database with realistic customers, plans, and usage history so the charts would actually look alive instead of empty. Then we built the API: metrics, users, and settings endpoints, with validation and consistent response shapes so the frontend never had to guess.</p>
+
+<p>One rule kept us honest: <em>the frontend would work against real endpoints, never mock data.</em> By the end of day one, every screen the frontend needed on day two had a real endpoint returning real data. That single decision is what let two people build the UI in parallel on day two instead of waiting on each other.</p>
+
+<h2>Day 2: The Frontend Rebuild</h2>
+
+<p>Day two was pure frontend. We started with the stat cards and recharts trend charts — the screens a founder opens first — then built the searchable users table, then the settings page, then navigation and a responsive pass across mobile and desktop.</p>
+
+<p>We shipped in small, reviewable slices: one screen at a time, each verified against the live API before moving on. Tests were written alongside the components, not as an afterthought. By the end of the day the dashboard ran end-to-end: log in as admin, watch MRR charts render from live queries, search users, update settings.</p>
+
+<h2>What Made Two Days Possible</h2>
+
+<ul>
+  <li><strong>Scope was fixed up front.</strong> No discovery phase, no feature creep. We agreed on the screens and the data before writing any code.</li>
+  <li><strong>API-first.</strong> Frontend and backend met at a contract — the endpoints and payloads — instead of in meetings.</li>
+  <li><strong>A boring stack.</strong> No novel infrastructure, no framework to fight. Just tools we use daily.</li>
+  <li><strong>No handoffs.</strong> Three engineers, one shared goal, one context. No ticket queues, no waiting on another team.</li>
+</ul>
+
+<h2>Why This Matters to Founders</h2>
+
+<p>Two days is not enough for a complex product, and we would never pretend otherwise. But this sprint shows something important: for a well-scoped build, a small team of senior engineers can go from zero to a deployable, demoable product in days, not months. The bottleneck is almost never engineering capacity — it's scope discipline and decision speed.</p>
+
+<p>When you're evaluating a team, don't count heads. Ask how fast they can turn a fixed scope into something you can click — then click it.</p>
+
+<hr>
+<p><em>Retro Engineering is a team of 3 senior engineers. See the result yourself — <a href="/demo">try the live demo</a> — or <a href="/services">see our services</a>.</em></p>`,
+  },
+  {
+    slug: "engineering-team-vs-freelancer",
+    title: "When to Hire an Engineering Team vs. a Freelancer",
+    date: "2026-08-09",
+    excerpt: "Freelancers are cheaper per hour; teams ship more per week. A practical breakdown of what each option actually buys you, when one clearly beats the other, and the questions to ask before you hire.",
+    tags: ["Hiring", "Founders", "Freelance"],
+    content: `<p>You need software built. The question is who builds it: a freelancer or a small engineering team. Both can be excellent, and both can burn your budget. The mistake founders make is choosing on hourly rate when the real difference is in the <em>shape</em> of what each option can deliver.</p>
+
+<h2>What a Freelancer Is Genuinely Good At</h2>
+
+<p>A good freelancer is a specialist. Hire one when the work is well-defined and bounded: a landing page, a specific integration, a data migration, a fix. They can start fast, the cost is predictable, and for a single clear deliverable they are often the right call.</p>
+
+<p>Freelancers struggle when the work is broad or long-lived. One person is a single point of failure — if they get busy, go quiet, or move on, you lose context and momentum. And most freelancers are either generalists or narrow specialists; getting architecture, backend, frontend, and testing all at senior depth from one person is rare.</p>
+
+<h2>What a Small Team Is Genuinely Good At</h2>
+
+<p>A small engineering team — say three senior engineers — covers the full stack at depth and keeps moving even when one person is out. Code review is built into the process, not skipped. Architecture decisions get made deliberately. Tests are part of the work, not a luxury. You get a cadence: spec, build, review, ship, every week.</p>
+
+<p>The honest trade-off is cost and flexibility. A team costs more per hour and is harder to scale down to nothing. Teams make sense when the work is a <em>product</em> — something with a backend, a frontend, users, and a future — rather than a task.</p>
+
+<h2>The Real Difference: Delivery Shape</h2>
+
+<p>Put both on a typical SaaS feature: auth, a data model, a few API endpoints, and a UI. The freelancer quotes fewer hours at a lower rate. But those hours are serial — the UI waits for the API, which waits for the schema. A team runs backend and frontend in parallel against an agreed contract, reviews each other's work, and ships the whole slice at once.</p>
+
+<p>That is why "cheaper per hour" and "cheaper overall" are different questions. If the freelancer takes six weeks and the team takes two, the team can win on total cost even at double the rate — before you count the value of your own time spent project-managing the work.</p>
+
+<h2>Questions to Ask Yourself</h2>
+
+<ul>
+  <li><strong>Is the scope bounded?</strong> One clear deliverable points to a freelancer. An evolving product points to a team.</li>
+  <li><strong>What happens if this person disappears next month?</strong> If losing them stalls everything, you have built a risk, not a product.</li>
+  <li><strong>Do you need review and testing, or just working code?</strong> For production software, you need both.</li>
+  <li><strong>How fast do you need the whole thing, not the first piece?</strong> Parallel work is where teams earn their premium.</li>
+</ul>
+
+<h2>The Mixed Model</h2>
+
+<p>These aren't either/or forever. Many teams bring in freelancers for spikes of work — a specialist integration, a design pass, extra hands on a deadline. And teams can take over and maintain what a freelancer shipped. The worst outcome is the reverse: a freelancer inheriting a team-built codebase with no context, or a team untangling five freelancers' divergent styles.</p>
+
+<h2>The Bottom Line</h2>
+
+<p>Hire a freelancer for a job. Hire a team for a product. If you're not sure which you have yet, that uncertainty itself is a signal — you likely want a team that can carry you through the ambiguous early phase and hand off cleanly when the shape of the work changes.</p>
+
+<hr>
+<p><em>Retro Engineering is a team of 3 senior engineers shipping production software end-to-end. <a href="/services">See our services</a> or <a href="/contact">get in touch</a>.</em></p>`,
+  },
+  {
+    slug: "mvp-cost-2026",
+    title: "How Much Does an MVP Really Cost in 2026?",
+    date: "2026-08-09",
+    excerpt: "Honest price ranges for a real MVP in 2026: what drives cost up and down, where founders waste the most money, and how to scope a first version that is actually shippable.",
+    tags: ["MVP", "Budgeting", "Founders"],
+    content: `<p>"How much does an MVP cost?" is the first question most founders ask, and the answer depends entirely on who is answering. Agencies quote project prices. Freelancers quote hourly. Nobody quotes the number you actually need: what does a <em>shippable</em> first version cost, honestly, in 2026? Here are real ranges and what moves them.</p>
+
+<h2>First, What Counts as an MVP</h2>
+
+<p>An MVP is one user flow, end to end: someone signs up, does the core thing your product exists for, and gets value — on production infrastructure. It is not a feature list, and it is not a polished prototype. If a human has to babysit it, it doesn't count as built.</p>
+
+<h2>Honest Ranges in 2026</h2>
+
+<ul>
+  <li><strong>$5,000–$15,000 — Simple CRUD app.</strong> A few screens, a database, basic auth, deployed. Good for internal tools and single-workflow products.</li>
+  <li><strong>$15,000–$40,000 — SaaS MVP.</strong> Multi-user accounts, real auth, payments (Stripe or similar), a dashboard, email, basic admin. This is the band most B2B SaaS founders should plan for.</li>
+  <li><strong>$40,000–$100,000+ — Complex domain or heavy integrations.</strong> Marketplace logic, real-time systems, compliance requirements, or deep third-party integrations. If your MVP needs a rules engine, expect this.</li>
+</ul>
+
+<p>These are ranges for an actual team with review and testing. A solo freelancer can land at the low end; a large agency will often exceed the top. Both are legitimate choices — just don't compare a freelancer's quote for "the screens" against a team's quote for "the product."</p>
+
+<h2>What Drives Cost Up</h2>
+
+<ul>
+  <li><strong>Scope.</strong> The single biggest driver. Every extra user role, workflow, and integration multiplies the work.</li>
+  <li><strong>Auth and billing done properly.</strong> Stripe checkout is easy; handling failed payments, proration, and account security is not.</li>
+  <li><strong>Integrations.</strong> Each third-party system is a small project of its own — documentation, edge cases, failure handling.</li>
+  <li><strong>Tests and security basics.</strong> Production software needs both. Skipping them makes the MVP cheaper and the relaunch much more expensive.</li>
+  <li><strong>Unclear requirements.</strong> Rework is the most expensive thing in software. Decisions made late cost more than decisions made wrong.</li>
+</ul>
+
+<h2>Where Founders Waste Money</h2>
+
+<ul>
+  <li>Polishing features nobody has validated. A beautiful settings page for a feature users don't want is pure cost.</li>
+  <li>Design overkill on day one. A clean, consistent UI beats a bespoke design system at MVP stage.</li>
+  <li>Building "scalable" infrastructure for ten users. Kubernetes is not an MVP feature.</li>
+  <li>Switching teams mid-build. The most expensive sentence in software is "let's start over with a new team."</li>
+</ul>
+
+<h2>How to Keep an MVP Honest</h2>
+
+<ul>
+  <li><strong>Cut until one workflow remains.</strong> If you can't describe your MVP as one sentence, it's two MVPs.</li>
+  <li><strong>Name the decider.</strong> The person who answers product questions within hours, not days.</li>
+  <li><strong>Plan for the next iteration, not the IPO.</strong> The best MVP is the one you're happy to throw away.</li>
+</ul>
+
+<h2>The Number You Should Actually Track</h2>
+
+<p>Cost per learning is the metric that matters. An MVP is cheap if it tells you what to build next; expensive if it tells you nothing. Spend to answer your riskiest question, whatever it costs — and no more.</p>
+
+<hr>
+<p><em>Retro Engineering builds MVPs from $7,500 with a fixed scope and a defined timeline. <a href="/services">See our services</a> or <a href="/contact">talk to us about your budget</a>.</em></p>`,
+  },
+  {
+    slug: "saas-code-audit-signs",
+    title: "Signs Your SaaS Needs a Code Audit",
+    date: "2026-08-09",
+    excerpt: "Seven technical-debt red flags any non-technical founder can spot — and what a code audit actually costs and finds.",
+    tags: ["Code Quality", "Technical Debt", "SaaS"],
+    content: `<p>You can't read your codebase, but you can read its symptoms. Technical debt rarely announces itself in code — it shows up in how your product behaves and how slowly your team moves. Here are the signs your SaaS needs an independent code audit, written for founders who will never open a pull request.</p>
+
+<h2>1. Every Feature Takes Longer Than the Last</h2>
+
+<p>The healthy benchmark is steady delivery: a similar-size feature takes a similar amount of time. If the same work keeps slipping, the code is fighting the team. Features that used to be two days now take a week, with fixes breaking other things. That's the classic signature of accumulated debt.</p>
+
+<h2>2. Deploys Are Scary</h2>
+
+<p>If shipping involves a prayer, a checklist of manual steps, and a rollback plan, your pipeline is carrying too much risk. Deploys should be routine — small, frequent, and reversible. A team that dreads releasing will release less, and a product that ships less falls further behind.</p>
+
+<h2>3. "That's Legacy" Applies to Core Logic</h2>
+
+<p>Some legacy code is fine. When the code handling money, authentication, or your core workflow is the code nobody wants to touch, that's a problem. Your most important business logic should be your most reviewed, best-tested code — not the code everyone is afraid of.</p>
+
+<h2>4. Security Basics Are Missing</h2>
+
+<p>A few signals any founder can check: no rate limiting on login (brute-force target), API keys or database credentials sitting in the repository, an admin panel with no extra protection, or payment code that nobody has reviewed. An audit will find these — better to find them before someone else does.</p>
+
+<h2>5. There Are No Tests</h2>
+
+<p>If a change to one feature breaks another and nobody knows until users complain, your codebase has no safety net. A healthy project has tests around the money paths, the auth flow, and the core workflow. Without them, every release is a gamble.</p>
+
+<h2>6. One Person Holds the Keys</h2>
+
+<p>If losing one engineer would freeze the product, you don't have a team, you have a hostage situation. Bus factor one is fine in a prototype and dangerous in a product. An audit will show how much knowledge lives only in one head.</p>
+
+<h2>7. Your Integrations Break Silently</h2>
+
+<p>Payments, email, webhooks — if failures only surface when a customer emails support, your error handling is missing. Reliable software fails loudly, with an alert and a log entry.</p>
+
+<h2>What an Audit Actually Costs and Finds</h2>
+
+<p>A focused audit of a typical SaaS codebase runs one to two weeks and typically lands between $1,000 and $5,000 depending on size. What you get is not a wall of complaints — it's a prioritized list: what's urgent (security, data integrity), what's cheap to fix now (a few hours each), and what's fine to leave alone for years. Most audits find one or two urgent items and a long tail of "fix when you touch it anyway."</p>
+
+<h2>Audits Are Not an Indictment</h2>
+
+<p>Technical debt is normal — every product with users has some. The problem isn't that debt exists; it's that nobody knows where it is or how bad it is. An audit converts vague anxiety into a concrete list, which is exactly what you need to plan the next few months of engineering.</p>
+
+<p>If two or three of the signs above feel familiar, get a second opinion on the code before you pour more money into it.</p>
+
+<hr>
+<p><em>Retro Engineering offers a <a href="/services">Technical Audit</a> — one week, a prioritized report, and no obligation to hire us afterward. <a href="/contact">Get in touch</a>.</em></p>`,
+  },
+  {
     slug: "debugging-websocket-proxy-issues-bun",
     title: "Debugging WebSocket Connection Issues in Production: A Real-World Proxy Fix",
     date: "2026-08-01",
