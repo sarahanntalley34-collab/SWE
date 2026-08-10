@@ -8,7 +8,9 @@ import { getNewsletterStats, sendNewsletter } from "~/lib/newsletter";
  */
 export const Route = createFileRoute("/admin/newsletter")({
   validateSearch: (search: Record<string, unknown>) => ({
-    admin: search.admin === "true",
+    // The router may parse ?admin=true as a JSON boolean or keep it a string —
+    // accept both so the admin gate actually opens with ?admin=true.
+    admin: search.admin === true || search.admin === "true",
   }),
   loader: () => getNewsletterStats(),
   component: AdminNewsletter,
