@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useRouterState } from "@tanstack/react-router";
 import { NewsletterSignup } from "~/components/NewsletterSignup";
 import { blogPosts } from "~/data/blog-posts";
 import { BUSINESS_NAME } from "~/lib/business";
@@ -72,6 +72,17 @@ function Section({
 function Blog() {
   const businessName = Route.useLoaderData();
   const name = businessName || "Retro Engineering";
+
+  // This route doubles as the layout for the article route (src/routes/blog/$slug.tsx,
+  // id "/blog/$slug"), which is registered as a child of "/blog" in the route tree.
+  // When the leaf matched route is the article child, render it through <Outlet />
+  // instead of this listing; /blog itself (leaf === "/blog") renders the grid below.
+  const leafRouteId = useRouterState({
+    select: (state) => state.matches[state.matches.length - 1]?.routeId,
+  });
+  if (leafRouteId === "/blog/$slug") {
+    return <Outlet />;
+  }
 
   // Newest first (dates are ISO YYYY-MM-DD, so lexicographic == chronological).
   const sortedPosts = [...blogPosts].sort((a, b) => b.date.localeCompare(a.date));
