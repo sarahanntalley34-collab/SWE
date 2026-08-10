@@ -168,47 +168,57 @@ async function readWelcomeQueueFromFile(): Promise<WelcomeQueueEntry[]> {
   return entries;
 }
 
-/** Subscribes a validated email: stores the subscriber AND queues a welcome-email job. */
-export const subscribeNewsletter = createServerFn({ method: "POST" })
-  .validator((data: unknown) => {
-    const d = data as { email?: string };
-    if (!d.email || !isValidEmail(d.email)) {
-      throw new Error("Invalid email");
-    }
-    return { email: d.email.trim() };
-  })
-  .handler(async ({ data }) => {
-    const subscribedAt = new Date().toISOString();
-    const sql = await db();
-    if (sql) {
-      await ensureSubscribersTable(sql);
-      // A returned row means the email was actually inserted (ON CONFLICT DO
-      // NOTHING skips duplicates). New rows are pending-welcome by default
-      // (welcome_sent_at IS NULL), so only fresh signups enqueue a welcome email
-      // and duplicates never re-queue. No filesystem involved — the published
-      // host has no local writable queue.
-      await sql`
-        INSERT INTO newsletter_subscribers (email)
-        VALUES (${data.email})
-        ON CONFLICT (email) DO NOTHING
-        RETURNING id
-      `;
-    } else {
-      // File fallback (no DATABASE_URL): keep subscriber + welcome job in JSONL.
-      const { appendFile: af } = await fs();
-      const existing = await readSubscribersFromFile();
-      if (existing.some((s) => s.email === data.email)) {
-        // Duplicate — do not store again and do not re-queue the welcome email.
-        return { success: true };
-      }
-      await af(SUBSCRIBERS_FILE, JSON.stringify({ email: data.email, subscribedAt }) + "\n");
-      await af(
-        WELCOME_QUEUE_FILE,
-        JSON.stringify({ email: data.email, subscribedAt, status: "pending" }) + "\n",
-      );
-    }
-    return { success: true };
-  });
+/**
+ * Subscribes a validated email: stores the subscriber AND queues a welcome-email
+ * job. Plain async function (NOT a server fn) so the public signup form can call
+ * it through a plain HTTP POST route — server functions 403 on the published
+ * host, so /api/newsletter/subscribe dispatches here instead.
+ *
+ * Returns `{ success: true, subscribed: true }` for a fresh signup (welcome
+ * email queued) and `{ success: true, subscribed: false }` for a duplicate
+ * (accepted, but NOT re-queued).
+ *
+ * Throws `new Error("Invalid email")` for invalid input; other errors propagate
+ * for the route layer to map to 500.
+ */
+export async function subscribeEmail(
+  email: string,
+): Promise<{ success: boolean; subscribed?: boolean }> {
+  if (!email || !isValidEmail(email)) {
+    throw new Error("Invalid email");
+  }
+  const normalized = email.trim();
+  const subscribedAt = new Date().toISOString();
+  const sql = await db();
+  if (sql) {
+    await ensureSubscribersTable(sql);
+    // A returned row means the email was actually inserted (ON CONFLICT DO
+    // NOTHING skips duplicates). New rows are pending-welcome by default
+    // (welcome_sent_at IS NULL), so only fresh signups enqueue a welcome email
+    // and duplicates never re-queue. No filesystem involved — the published
+    // host has no local writable queue.
+    const rows = (await sql`
+      INSERT INTO newsletter_subscribers (email)
+      VALUES (${normalized})
+      ON CONFLICT (email) DO NOTHING
+      RETURNING id
+    `) as { id: number }[];
+    return { success: true, subscribed: rows.length > 0 };
+  }
+  // File fallback (no DATABASE_URL): keep subscriber + welcome job in JSONL.
+  const { appendFile: af } = await fs();
+  const existing = await readSubscribersFromFile();
+  if (existing.some((s) => s.email === normalized)) {
+    // Duplicate — do not store again and do not re-queue the welcome email.
+    return { success: true, subscribed: false };
+  }
+  await af(SUBSCRIBERS_FILE, JSON.stringify({ email: normalized, subscribedAt }) + "\n");
+  await af(
+    WELCOME_QUEUE_FILE,
+    JSON.stringify({ email: normalized, subscribedAt, status: "pending" }) + "\n",
+  );
+  return { success: true, subscribed: true };
+}
 
 /**
  * Pending welcome emails, oldest first. DB mode: subscribers whose

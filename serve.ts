@@ -222,6 +222,24 @@ if (pathname === "/api/contact") {
   }
 }
 
+// Newsletter API: subscribe (JSON POST) — the public signup form posts here.
+// Plain route (not a server fn) so it works on the published host; fresh
+// signups queue a welcome email, duplicates are accepted but not re-queued.
+if (pathname === "/api/newsletter/subscribe") {
+  if (req.method !== "POST") {
+    return Response.json({ error: "Method not allowed" }, { status: 405 });
+  }
+  try {
+    const { POST: newsletterSubscribePost } = await import(
+      "./src/routes/api/newsletter-subscribe.ts"
+    );
+    return await newsletterSubscribePost(req);
+  } catch (error) {
+    Sentry.captureException(error);
+    return Response.json({ error: "Failed to subscribe" }, { status: 500 });
+  }
+}
+
         // Static files
         if (pathname !== "/") {
           const file = Bun.file(CLIENT_DIR + pathname);

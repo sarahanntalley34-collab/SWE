@@ -108,6 +108,31 @@ function newsletterApiPlugin(): Plugin {
           res.end(JSON.stringify({ error: "Failed to save message" }));
         }
       });
+      server.middlewares.use("/api/newsletter/subscribe", async (req, res) => {
+        if (req.method !== "POST") {
+          res.statusCode = 405;
+          res.end(JSON.stringify({ error: "Method not allowed" }));
+          return;
+        }
+        try {
+          const { POST: newsletterSubscribePost } = await import(
+            "./src/routes/api/newsletter-subscribe"
+          );
+          const body = await readBody(req);
+          const response = await newsletterSubscribePost(
+            new Request("http://localhost/api/newsletter/subscribe", {
+              method: "POST",
+              body,
+            }),
+          );
+          res.statusCode = response.status;
+          res.setHeader("Content-Type", "application/json");
+          res.end(await response.text());
+        } catch {
+          res.statusCode = 500;
+          res.end(JSON.stringify({ error: "Failed to subscribe" }));
+        }
+      });
     },
   };
 }

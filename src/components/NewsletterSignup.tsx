@@ -1,9 +1,11 @@
 import { useState, type FormEvent } from "react";
-import { subscribeNewsletter } from "~/lib/newsletter";
 
 /**
  * Reusable newsletter signup form — email input + subscribe button with
  * success/error state. Used on the homepage and the blog.
+ *
+ * Submits to the plain POST /api/newsletter/subscribe route (not a server fn —
+ * server functions 403 on the published host).
  */
 export function NewsletterSignup({ className = "" }: { className?: string }) {
   const [email, setEmail] = useState("");
@@ -24,7 +26,14 @@ export function NewsletterSignup({ className = "" }: { className?: string }) {
     setError("");
     setBusy(true);
     try {
-      await subscribeNewsletter({ data: { email } });
+      const res = await fetch("/api/newsletter/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (!res.ok) {
+        throw new Error(`Subscribe failed (${res.status})`);
+      }
       setSubscribed(true);
       setEmail("");
     } catch {
