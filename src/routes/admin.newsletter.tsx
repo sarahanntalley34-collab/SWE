@@ -24,7 +24,7 @@ export const Route = createFileRoute("/admin/newsletter")({
 
 function AdminNewsletter() {
   const { admin } = Route.useSearch();
-  const { count } = Route.useLoaderData();
+  const { count, pendingWelcome } = Route.useLoaderData();
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
   const [busy, setBusy] = useState(false);
@@ -79,13 +79,23 @@ function AdminNewsletter() {
           Compose a newsletter and queue it for delivery to all subscribers.
         </p>
 
-        <div className="mt-8 rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950">
-          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-            Subscribers
-          </p>
-          <p className="mt-1 text-4xl font-bold tracking-tight text-indigo-600 dark:text-indigo-400">
-            {count}
-          </p>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950">
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Subscribers
+            </p>
+            <p className="mt-1 text-4xl font-bold tracking-tight text-indigo-600 dark:text-indigo-400">
+              {count}
+            </p>
+          </div>
+          <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950">
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Welcome emails pending
+            </p>
+            <p className="mt-1 text-4xl font-bold tracking-tight text-indigo-600 dark:text-indigo-400">
+              {pendingWelcome}
+            </p>
+          </div>
         </div>
 
         <form

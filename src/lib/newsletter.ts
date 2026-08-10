@@ -11,13 +11,17 @@ async function fs() {
  *
  * - Subscribers live in the Neon Postgres database (table `newsletter_subscribers`),
  *   so the published site works where the local filesystem isn't available.
- * - A successful subscription also queues a welcome email job (never sends directly).
- * - The admin page queues bulk newsletter sends for the lead to process.
- * - The welcome-email and newsletter-send queues stay file-based (JSONL) because the
- *   lead processes them locally.
+ * - A successful NEW subscription queues a welcome email in the database:
+ *   `welcome_sent_at IS NULL` means the welcome email is pending (never sent
+ *   directly). Duplicate signups do NOT re-queue. The lead reads and acknowledges
+ *   the queue via the API endpoints (GET /api/newsletter/pending-welcome,
+ *   POST /api/newsletter/mark-welcome-sent).
+ * - The admin page queues bulk newsletter sends for the lead to process; the
+ *   newsletter-send queue stays file-based (JSONL) because the lead processes it
+ *   locally.
  *
  * When `DATABASE_URL` is not set (bare local build without a connected database),
- * subscriber storage falls back to the original JSONL file so dev still works.
+ * subscriber storage and the welcome queue fall back to JSONL files so dev works.
  */
 
 export const SUBSCRIBERS_FILE = "/home/team/shared/newsletter-subscribers.jsonl";
@@ -25,6 +29,7 @@ export const WELCOME_QUEUE_FILE = "/home/team/shared/pending-welcome-emails.json
 export const SEND_QUEUE_FILE = "/home/team/shared/pending-newsletter-sends.jsonl";
 
 export type Subscriber = { email: string; subscribedAt: string };
+export type PendingWelcomeEmail = { email: string; subscribedAt: string };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -50,7 +55,7 @@ async function db(): Promise<Sql | null> {
 
 let tableReady: Promise<void> | null = null;
 
-/** Creates the subscriber table on first use (idempotent, per process). */
+/** Creates the subscriber table + welcome-email column on first use (idempotent, per process). */
 async function ensureSubscribersTable(sql: Sql): Promise<void> {
   if (!tableReady) {
     tableReady = (async () => {
@@ -59,8 +64,15 @@ async function ensureSubscribersTable(sql: Sql): Promise<void> {
           CREATE TABLE IF NOT EXISTS newsletter_subscribers (
             id SERIAL PRIMARY KEY,
             email TEXT NOT NULL UNIQUE,
-            subscribed_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+            subscribed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+            welcome_sent_at TIMESTAMPTZ
           )
+        `;
+        // Idempotent migration for databases created before welcome-email tracking
+        // existed (NULL welcome_sent_at = welcome email pending).
+        await sql`
+          ALTER TABLE newsletter_subscribers
+          ADD COLUMN IF NOT EXISTS welcome_sent_at TIMESTAMPTZ
         `;
       } catch (e) {
         // Retry on the next call instead of pinning the process to a rejected promise.
@@ -121,6 +133,41 @@ async function readSubscribersFromFile(): Promise<Subscriber[]> {
   return subscribers;
 }
 
+/** A welcome-queue job as stored in the JSONL fallback file. */
+type WelcomeQueueEntry = { email: string; subscribedAt: string; status: string };
+
+/** Reads the JSONL welcome-queue fallback file, skipping malformed lines. */
+async function readWelcomeQueueFromFile(): Promise<WelcomeQueueEntry[]> {
+  let raw: string;
+  try {
+    raw = await (await fs()).readFile(WELCOME_QUEUE_FILE, "utf8");
+  } catch (e) {
+    if ((e as { code?: string }).code === "ENOENT") return [];
+    throw e;
+  }
+  const entries: WelcomeQueueEntry[] = [];
+  for (const line of raw.split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    try {
+      const parsed = JSON.parse(trimmed) as Partial<WelcomeQueueEntry>;
+      if (
+        typeof parsed.email === "string" &&
+        typeof parsed.subscribedAt === "string"
+      ) {
+        entries.push({
+          email: parsed.email,
+          subscribedAt: parsed.subscribedAt,
+          status: parsed.status === "pending" ? "pending" : parsed.status ?? "pending",
+        });
+      }
+    } catch {
+      // Skip malformed lines rather than failing the whole read.
+    }
+  }
+  return entries;
+}
+
 /** Subscribes a validated email: stores the subscriber AND queues a welcome-email job. */
 export const subscribeNewsletter = createServerFn({ method: "POST" })
   .validator((data: unknown) => {
@@ -132,28 +179,93 @@ export const subscribeNewsletter = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }) => {
     const subscribedAt = new Date().toISOString();
-    // Subscriber first, then the welcome-email queue job — never sent directly.
     const sql = await db();
     if (sql) {
       await ensureSubscribersTable(sql);
+      // A returned row means the email was actually inserted (ON CONFLICT DO
+      // NOTHING skips duplicates). New rows are pending-welcome by default
+      // (welcome_sent_at IS NULL), so only fresh signups enqueue a welcome email
+      // and duplicates never re-queue. No filesystem involved — the published
+      // host has no local writable queue.
       await sql`
         INSERT INTO newsletter_subscribers (email)
         VALUES (${data.email})
         ON CONFLICT (email) DO NOTHING
+        RETURNING id
       `;
     } else {
+      // File fallback (no DATABASE_URL): keep subscriber + welcome job in JSONL.
       const { appendFile: af } = await fs();
+      const existing = await readSubscribersFromFile();
+      if (existing.some((s) => s.email === data.email)) {
+        // Duplicate — do not store again and do not re-queue the welcome email.
+        return { success: true };
+      }
       await af(SUBSCRIBERS_FILE, JSON.stringify({ email: data.email, subscribedAt }) + "\n");
+      await af(
+        WELCOME_QUEUE_FILE,
+        JSON.stringify({ email: data.email, subscribedAt, status: "pending" }) + "\n",
+      );
     }
-    const { appendFile: af } = await fs();
-    await af(
-      WELCOME_QUEUE_FILE,
-      JSON.stringify({ email: data.email, subscribedAt, status: "pending" }) + "\n",
-    );
     return { success: true };
   });
 
-/** Admin stats: total subscriber count. */
+/**
+ * Pending welcome emails, oldest first. DB mode: subscribers whose
+ * `welcome_sent_at` is NULL. File mode: pending entries in the JSONL queue.
+ */
+export async function getPendingWelcomeEmails(): Promise<{ emails: PendingWelcomeEmail[] }> {
+  const sql = await db();
+  if (sql) {
+    await ensureSubscribersTable(sql);
+    const rows = (await sql`
+      SELECT email, subscribed_at
+      FROM newsletter_subscribers
+      WHERE welcome_sent_at IS NULL
+      ORDER BY subscribed_at ASC
+    `) as { email: string; subscribed_at: Date | string }[];
+    return {
+      emails: rows.map((r) => ({
+        email: r.email,
+        subscribedAt: new Date(r.subscribed_at).toISOString(),
+      })),
+    };
+  }
+  const entries = (await readWelcomeQueueFromFile()).filter((e) => e.status === "pending");
+  return { emails: entries.map((e) => ({ email: e.email, subscribedAt: e.subscribedAt })) };
+}
+
+/**
+ * Marks the given emails as having received their welcome email
+ * (sets welcome_sent_at = NOW()). Unknown or already-marked emails are ignored.
+ * Returns the number of emails actually marked.
+ */
+export async function markWelcomeEmailsSent(emails: string[]): Promise<{ marked: number }> {
+  const unique = [...new Set(emails.map((e) => e.trim()).filter(Boolean))];
+  if (unique.length === 0) return { marked: 0 };
+  const sql = await db();
+  if (sql) {
+    await ensureSubscribersTable(sql);
+    const rows = (await sql`
+      UPDATE newsletter_subscribers
+      SET welcome_sent_at = NOW()
+      WHERE email = ANY(${unique}) AND welcome_sent_at IS NULL
+      RETURNING email
+    `) as { email: string }[];
+    return { marked: rows.length };
+  }
+  const entries = await readWelcomeQueueFromFile();
+  const remaining = entries.filter((e) => !unique.includes(e.email));
+  const marked = entries.length - remaining.length;
+  const { writeFile: wf } = await fs();
+  await wf(
+    WELCOME_QUEUE_FILE,
+    remaining.length ? remaining.map((e) => JSON.stringify(e)).join("\n") + "\n" : "",
+  );
+  return { marked };
+}
+
+/** Admin stats: total subscriber count + pending welcome emails. */
 export const getNewsletterStats = createServerFn({ method: "GET" }).handler(async () => {
   const sql = await db();
   if (sql) {
@@ -161,10 +273,17 @@ export const getNewsletterStats = createServerFn({ method: "GET" }).handler(asyn
     const rows = (await sql`SELECT COUNT(*) AS count FROM newsletter_subscribers`) as {
       count: string | number;
     }[];
-    return { count: Number(rows[0]?.count ?? 0) };
+    const pending = (await sql`
+      SELECT COUNT(*) AS count FROM newsletter_subscribers WHERE welcome_sent_at IS NULL
+    `) as { count: string | number }[];
+    return {
+      count: Number(rows[0]?.count ?? 0),
+      pendingWelcome: Number(pending[0]?.count ?? 0),
+    };
   }
   const subscribers = await readSubscribersFromFile();
-  return { count: subscribers.length };
+  const pending = (await readWelcomeQueueFromFile()).filter((e) => e.status === "pending").length;
+  return { count: subscribers.length, pendingWelcome: pending };
 });
 
 /** Admin send: queues a newsletter job for every current subscriber. */
