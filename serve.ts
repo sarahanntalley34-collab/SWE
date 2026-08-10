@@ -207,6 +207,21 @@ if (pathname === "/api/newsletter/mark-welcome-sent") {
   }
 }
 
+// Contact API: submit a contact message (JSON POST) — stored in Neon
+// (`contact_messages`), with a JSONL fallback when DATABASE_URL is unset.
+if (pathname === "/api/contact") {
+  if (req.method !== "POST") {
+    return Response.json({ error: "Method not allowed" }, { status: 405 });
+  }
+  try {
+    const { POST: contactPost } = await import("./src/routes/api/contact.ts");
+    return await contactPost(req);
+  } catch (error) {
+    Sentry.captureException(error);
+    return Response.json({ error: "Failed to save message" }, { status: 500 });
+  }
+}
+
         // Static files
         if (pathname !== "/") {
           const file = Bun.file(CLIENT_DIR + pathname);
