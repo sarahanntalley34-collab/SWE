@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
+import { SiteHeader } from "~/components/SiteHeader";
 import { Sentry } from "~/lib/sentry";
 import appCss from "~/styles/app.css?url";
 
@@ -69,6 +70,7 @@ function RootDocument({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        <SiteHeader />
         {children}
         <Scripts />
       </body>

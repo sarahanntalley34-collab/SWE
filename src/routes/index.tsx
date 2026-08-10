@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { readFile } from "node:fs/promises";
 import { NewsletterSignup } from "~/components/NewsletterSignup";
+import logo from "~/assets/logo.png";
 
 const getBusinessName = createServerFn({ method: "GET" }).handler(async () => {
   try {
@@ -371,7 +372,12 @@ function Home() {
       {/* ── Footer ────────────────────────────────────────────────────────── */}
       <footer className="border-t border-gray-200 px-6 py-8 dark:border-gray-800 sm:px-8 lg:px-12">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 sm:flex-row sm:justify-between">
-          <a href="/" aria-label="Retro Engineering home" className="inline-flex items-center">
+          <a href="/" aria-label="Retro Engineering home" className="inline-flex items-center gap-2.5">
+            <img
+              src={logo}
+              alt="Retro Engineering logo"
+              className="h-8 w-8 rounded-md object-contain"
+            />
             <span className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
               Retro Engineering
             </span>
