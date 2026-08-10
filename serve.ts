@@ -11,6 +11,20 @@
 import * as Sentry from "@sentry/bun";
 import handler from "./dist/server/server.js";
 
+// Demo product, served in-process: the demo app is a Bun + Hono server whose
+// fetch handler and WebSocket logic we drive directly, so /demo works on the
+// published host without any external backend process. import.meta.main is
+// false in the demo module here, so importing it does NOT bind port 3001.
+import { app as demoApp, serveStatic as demoServeStatic } from "./demo/src/index.ts";
+import {
+  handleWebSocketOpen,
+  handleWebSocketClose,
+} from "./demo/src/ws/index.ts";
+import {
+  addRealtimeClient,
+  removeRealtimeClient,
+} from "./demo/src/realtime.ts";
+
 Sentry.init({
   dsn: "https://24908d5fb6f273b1f7a0aa7038387ce4@o4511724818464768.ingest.us.sentry.io/4511724822790144",
   environment: "production",
@@ -25,7 +39,53 @@ Sentry.init({
 const PORT = 3000;
 const HOST = "0.0.0.0";
 const CLIENT_DIR = `${import.meta.dir}/dist/client`;
-const DEMO_BACKEND = "http://localhost:3001";
+
+// Demo backend override. The published host only receives DATABASE_URL, so the
+// demo must run inside this server: DEMO_IN_PROCESS is the default. Setting
+// DEMO_BACKEND_URL (e.g. a separately-run demo on localhost:3001 in dev) routes
+// /demo/* through the proxy below instead, keeping the old topology available.
+const DEMO_BACKEND = process.env.DEMO_BACKEND_URL ?? "http://localhost:3001";
+const DEMO_IN_PROCESS = !process.env.DEMO_BACKEND_URL;
+
+/** WebSocket upgrade data carried for /demo/ws* connections. */
+type DemoWsData = {
+  type?: string;
+  upstreamPath?: string;
+  search?: string;
+  inProcess?: boolean;
+};
+
+/**
+ * Dispatch a /demo/* request to the demo app in-process. Mirrors the demo
+ * server's own fetch routing: static SPA assets from client/dist for GETs
+ * outside /api, /health and /ws; everything else goes to the Hono app with the
+ * /demo prefix stripped.
+ */
+async function serveDemoInProcess(req: Request): Promise<Response> {
+  const url = new URL(req.url);
+  const demoPath = url.pathname.slice("/demo".length) || "/";
+  try {
+    if (
+      req.method === "GET" &&
+      !demoPath.startsWith("/api/") &&
+      demoPath !== "/health" &&
+      !demoPath.startsWith("/ws")
+    ) {
+      // serveStatic strips the /demo prefix itself and falls back to index.html.
+      return demoServeStatic(url.pathname);
+    }
+    const demoUrl = new URL(demoPath + url.search, "http://demo.local");
+    const demoReq = new Request(demoUrl, {
+      method: req.method,
+      headers: req.headers,
+      body: req.method !== "GET" && req.method !== "HEAD" ? req.body : undefined,
+    });
+    return await demoApp.fetch(demoReq);
+  } catch (error) {
+    Sentry.captureException(error);
+    return new Response("Demo backend unavailable", { status: 502 });
+  }
+}
 
 // Free PORT regardless of which user owns the current listener. lsof runs under
 // sudo so it can see (and the kill can signal) a process owned by another user;
@@ -51,12 +111,18 @@ for (let attempt = 1; ; attempt++) {
         const url = new URL(req.url);
         const { pathname } = url;
 
-        // WebSocket proxy: /demo/ws* → upstream demo backend
+        // WebSocket: /demo/ws* → handled in-process (default) or forwarded to
+        // the DEMO_BACKEND_URL override.
         if (pathname === "/demo/ws" || pathname.startsWith("/demo/ws/")) {
           const upstreamPath = pathname.slice("/demo".length) || "/";
           if (
             server.upgrade(req, {
-              data: { type: "demo-ws", upstreamPath, search: url.search },
+              data: {
+                type: "demo-ws",
+                upstreamPath,
+                search: url.search,
+                inProcess: DEMO_IN_PROCESS,
+              } satisfies DemoWsData,
             })
           ) {
             return; // upgraded
@@ -64,8 +130,12 @@ for (let attempt = 1; ; attempt++) {
           return new Response("WebSocket upgrade failed", { status: 400 });
         }
 
-        // Demo proxy: forward /demo/* to the demo backend (regular HTTP)
+        // Demo product: /demo/* — serve the demo app in-process (default) or
+        // proxy to DEMO_BACKEND_URL when one is configured.
         if (pathname.startsWith("/demo")) {
+          if (DEMO_IN_PROCESS) {
+            return await serveDemoInProcess(req);
+          }
           const upstreamPath = pathname.slice("/demo".length) || "/";
           const upstreamUrl = `${DEMO_BACKEND}${upstreamPath}${url.search}`;
           const upstreamReq = new Request(upstreamUrl, {
@@ -155,16 +225,34 @@ if (pathname === "/api/newsletter/mark-welcome-sent") {
       },
       websocket: {
         open(ws) {
-          const data = ws.data as
-            | { type?: string; upstreamPath?: string; search?: string }
-            | undefined;
+          const data = ws.data as DemoWsData | undefined;
           if (data?.type !== "demo-ws") return;
+
+          // In-process demo WebSockets: drive the demo's own WS logic directly.
+          // /demo/ws/health and /demo/ws/errors are public live streams;
+          // /demo/ws?token=… is the authenticated metrics feed (JWT in query).
+          if (data.inProcess) {
+            const demoPath = data.upstreamPath || "/ws";
+            if (demoPath === "/ws/health" || demoPath === "/ws/errors") {
+              addRealtimeClient(
+                ws as Parameters<typeof addRealtimeClient>[0],
+                demoPath === "/ws/health" ? "health" : "errors",
+              );
+            } else if (demoPath === "/ws") {
+              const token = new URLSearchParams(data.search || "").get("token") || "";
+              handleWebSocketOpen(
+                ws as Parameters<typeof handleWebSocketOpen>[0],
+                token,
+              );
+            }
+            return;
+          }
 
           // Connect to the upstream demo backend WebSocket, preserving the
           // proxied path and query (/demo/ws/health → /ws/health,
           // /demo/ws?token=… → /ws?token=…).
           const upstream = new WebSocket(
-            `ws://localhost:3001${data.upstreamPath || "/ws"}${data.search || ""}`,
+            `${DEMO_BACKEND.replace(/^http/, "ws")}${data.upstreamPath || "/ws"}${data.search || ""}`,
           );
           (ws as any).__upstream = upstream;
 
@@ -191,6 +279,12 @@ if (pathname === "/api/newsletter/mark-welcome-sent") {
           }
         },
         close(ws) {
+          const data = ws.data as DemoWsData | undefined;
+          if (data?.type === "demo-ws" && data.inProcess) {
+            removeRealtimeClient(ws as Parameters<typeof removeRealtimeClient>[0]);
+            handleWebSocketClose(ws as Parameters<typeof handleWebSocketClose>[0]);
+            return;
+          }
           const upstream = (ws as any).__upstream as WebSocket | undefined;
           if (upstream) upstream.close();
         },
