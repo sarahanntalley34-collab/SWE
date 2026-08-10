@@ -926,5 +926,101 @@ function useWebSocket(token: string) {
 <hr>
 <p><em>At <a href="/">Retro Engineering</a> we work exactly this way: scoped sprints, small PRs, real reviews, and a deployable slice in the first days. <a href="/demo">Try our live demo</a> to see the kind of product we ship, or <a href="/services">see our services and pricing</a>.</em></p>`,
   },
+  {
+    slug: "sprint-audit-retainer-which-engagement",
+    title: "Sprint, Audit, or Retainer — How to Pick the Right Engineering Engagement for Your SaaS",
+    date: "2026-08-11",
+    excerpt: "Audit, sprint, MVP, or retainer — four ways to work with an engineering team, and each one is right for a different moment. A practical framework for matching the shape of your problem to the right engagement, with the signals that tell you which one you actually need.",
+    tags: ["Engineering", "Audit", "Retainer", "Founders"],
+    content: `<p>When a founder decides to bring in outside engineering help, the first problem is rarely the code. It is the menu. Code audit, engineering sprint, MVP build, retainer — the names blur together, the price tags all sit in the same four figures, and every sales page promises to "ship quality software." So founders pick the cheapest option, or the one a friend used, and find out three weeks in that they bought the wrong shape of work.</p>
+
+<p>These four engagements are not the same product in different sizes. They are different tools for different questions. An audit answers "what is wrong with what we have?" A sprint answers "can you ship this specific thing?" An MVP build answers "can you build the first version?" A retainer answers "will you keep it running and improving?" Match the tool to the question and the engagement almost picks itself. Here is how to do that, in the order a founder actually thinks about it.</p>
+
+<h2>Technical Audit: When You Need to Know What You're Dealing With</h2>
+
+<p>A technical audit is a fixed-scope assessment of an existing codebase — architecture, security, operations, and code quality — that ends with a prioritized findings list. Not a wall of complaints: a ranked list of what is urgent, what is cheap to fix now, and what is fine to leave alone for years, plus the quick wins that eliminate whole classes of problems in a day.</p>
+
+<p>You need one when things feel slow or fragile and you cannot say why. The signals are easy to spot even without reading code:</p>
+
+<ul>
+  <li><strong>You can't name your last deploy</strong> — when it happened, what was in it, or how it went.</li>
+  <li><strong>Deploys that used to take minutes now take an afternoon</strong>, and the rollback script gets more use than the feature.</li>
+  <li><strong>Features ship slower even though the team is more experienced.</strong> That is the purest measure of debt: velocity declining against a fixed team.</li>
+  <li><strong>Bugs cluster in the same few modules</strong>, and fixing one breaks another.</li>
+  <li><strong>Money is about to change hands</strong> — you are raising, onboarding investors, or selling, and someone will eventually read the code.</li>
+  <li><strong>One person is the only person who understands the system</strong>, and they are thinking about leaving.</li>
+</ul>
+
+<p>What you get at the end: a prioritized findings list you can work top-down, a roadmap that sequences the structural work so nothing you fix gets undone by the next build, and an honest risk assessment — including which systems would hurt most if they failed. You also get the answer to the question you were really asking: "should we keep building on this, and what will it cost to do so safely?"</p>
+
+<h2>Engineering Sprint: When You Know Exactly What Needs Building</h2>
+
+<p>An engineering sprint is a scoped one-to-two-week engagement with a single agreed outcome. One feature. One integration. One spike to retire the riskiest technical unknown. One launch that is stuck and needs unblocking. The scope is written down before the clock starts, the team ships small reviewable pull requests, and you end with a working, reviewed, deployable slice — not a report about it.</p>
+
+<p>A sprint fits when you can describe the deliverable in one sentence, and when the work is bounded rather than open-ended. It is also the standard way to evaluate a team before committing to something bigger: two weeks is long enough to see how they scope, review, and communicate, and short enough that the bet is small.</p>
+
+<p>Signals that point here:</p>
+
+<ul>
+  <li><strong>"We just need one thing shipped"</strong> before a launch, an event, or a demo.</li>
+  <li><strong>The feature is well-defined but your team is fully booked</strong>, and hiring for it would take longer than the work itself.</li>
+  <li><strong>You want to test an idea in code</strong> before betting a full build on it.</li>
+  <li><strong>You need an evidence-based estimate</strong> for a larger build, and a two-week slice is the cheapest way to get one.</li>
+</ul>
+
+<p>What you get: the shipped slice, plus a calibrated sense of how the team actually moves — which is the estimate basis for whatever comes next.</p>
+
+<h2>MVP Build: When Nothing Exists Yet</h2>
+
+<p>An MVP build takes a pre-product idea to a working first version: one user flow, end to end, on real infrastructure, with real code, a real database, and tests. Not a feature list. Not a polished prototype. A product a stranger can sign up for and use.</p>
+
+<p>This is the right engagement when there is nothing to assess or sprint against. There is no code, or the code is a prototype that cannot be shown to a customer. The question is not "what is wrong with our software" — it is "does this idea work as a product?"</p>
+
+<p>Signals that point here:</p>
+
+<ul>
+  <li><strong>"We have nothing to show"</strong> is a sentence you keep saying.</li>
+  <li><strong>Investors or early customers keep asking for a demo.</strong></li>
+  <li><strong>You have validated the problem in conversations</strong> and now need the thing itself to validate it with real usage.</li>
+  <li><strong>The first user flow is clear</strong> — the open question is execution, not exploration.</li>
+</ul>
+
+<p>What you get: a deployable first version, and — the actual deliverable — a product in front of users generating the feedback that tells you what to build next. The MVP is the cheapest way to discover what you should have built.</p>
+
+<h2>Retainer: When the Product Is Live and the Work Never Stops</h2>
+
+<p>A retainer is a monthly commitment that a specific team holds context on your product: maintenance, small urgent changes, incremental features, dependency and security updates, and keeping the system observable and healthy. It is not a subscription to have an engineer on call; it is a promise that someone who knows the codebase has guaranteed capacity on it every month.</p>
+
+<p>It fits after launch, when work arrives as a queue of small, unrelated, time-sensitive items that require deep context — the Stripe webhook that needs a new event type, the export that breaks for one customer's timezone, the dependency update that is quietly becoming a security issue. Continuity is the whole point: the same engineers who built or audited the product keep the context, instead of a new freelancer spending your budget learning what the last one knew.</p>
+
+<p>Signals that point here:</p>
+
+<ul>
+  <li><strong>Launch happened, and the bugs and requests did not stop.</strong></li>
+  <li><strong>Every small change needs a week of ramp-up</strong> because nobody holds the context.</li>
+  <li><strong>Dependencies drift, patches pile up, and nothing is monitored</strong> — the operational tax is being paid in anxiety.</li>
+  <li><strong>The roadmap is real, but nobody is executing it</strong> because the team that built the product disbanded.</li>
+</ul>
+
+<p>What you get: guaranteed capacity, a bounded monthly cost, and the removal of the operational tax every live product pays. The product compounds instead of rotting.</p>
+
+<h2>How to Choose: A Short Checklist</h2>
+
+<p>Start with the state of the product, not the price of the engagement:</p>
+
+<ul>
+  <li><strong>Nothing built yet?</strong> → MVP Build. You need a first version, not an assessment of one.</li>
+  <li><strong>Product is live and needs ongoing care?</strong> → Retainer. Maintenance and incremental delivery are the work now.</li>
+  <li><strong>Product exists but something feels wrong?</strong> → Audit first. It is the smallest commitment and it produces the plan — which may include a sprint to execute the top findings.</li>
+  <li><strong>Product exists, feels fine, and you have one well-defined thing to ship?</strong> → Engineering Sprint.</li>
+  <li><strong>Not sure whether the problem is the code, the plan, or the product itself?</strong> → Audit. It is the cheapest way to find out which question you are actually asking.</li>
+</ul>
+
+<p>Two ordering rules are worth stealing. First: when in doubt about the health of an existing codebase, audit before you sprint — a sprint built on a foundation you do not understand will spend half its budget fighting the foundation. Second: the engagement shape matters more than the headcount. A scoped sprint is a sprint whether one engineer or three run it; what changes is speed, review quality, and full-stack coverage — which is exactly what you should compare when you look at quotes.</p>
+
+<p>None of this requires you to write code. It requires you to name the question you are asking. Once you can say "I need to know what is wrong," "I need this one feature shipped," "I need a first version," or "I need this product kept alive," the right engagement is usually obvious.</p>
+
+<p>If you are still not sure which shape fits, that is a normal place to be. <a href="/services">Our services page</a> walks through each engagement and what it includes — and if you do not need one of them yet, we will tell you that plainly.</p>`,
+  },
 
 ];
