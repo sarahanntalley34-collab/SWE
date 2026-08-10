@@ -135,6 +135,18 @@ function Services() {
           Every engagement includes code review, automated testing, and a
           handoff-ready deliverable. We work async by default with weekly syncs.
         </p>
+        <div className="mt-8">
+          <a
+            href="/demo"
+            aria-label="See what we build — try the demo"
+            className="inline-flex items-center rounded-lg border border-indigo-200 bg-indigo-50 px-5 py-2.5 text-sm font-semibold text-indigo-700 shadow-sm transition hover:bg-indigo-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:border-indigo-800 dark:bg-indigo-950 dark:text-indigo-300 dark:hover:bg-indigo-900 dark:focus-visible:outline-indigo-400"
+          >
+            See what we build — try the demo
+            <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+        </div>
       </Section>
 
       {/* ── Product Cards ─────────────────────────────────────────────────── */}
@@ -192,6 +204,26 @@ function Services() {
                 </p>
               </div>
             ))}
+          </div>
+          <div className="mt-12 flex flex-col items-center gap-4 rounded-xl border border-indigo-200 bg-white px-6 py-8 text-center shadow-sm dark:border-indigo-800 dark:bg-gray-950">
+            <p className="text-lg font-semibold text-gray-900 dark:text-white">
+              Not sure what "quality engineering" looks like?
+            </p>
+            <p className="max-w-xl text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+              Try our live demo — a real SaaS metrics dashboard with real-time
+              charts, user management, and settings. See exactly what we build
+              before you buy anything.
+            </p>
+            <a
+              href="/demo"
+              aria-label="See what we build — try the demo"
+              className="inline-flex items-center rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-400"
+            >
+              See what we build — try the demo
+              <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </a>
           </div>
         </div>
       </Section>
