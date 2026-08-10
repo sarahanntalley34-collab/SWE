@@ -862,4 +862,40 @@ function useWebSocket(token: string) {
 
 <p>At <a href="/">Retro Engineering</a> we run <a href="/services">technical audits</a> as a fixed-scope engagement — a focused look at architecture, security, operations, and code quality, ending with a prioritized findings list you can act on. We will also tell you plainly if we do not think you need one yet.</p>`
   },
+  {
+    slug: "engineering-retainer-after-launch",
+    title: "Your SaaS Doesn't End at Launch — Why Founders Keep an Engineering Retainer",
+    date: "2026-08-10",
+    excerpt: "Launch day is the start, not the finish line: bugs, small features, dependency updates, and uptime never stop. A practical look at what running software after launch actually takes — and why a monthly retainer beats both hiring and letting the product rot.",
+    tags: ["Retainer", "Founders", "Maintenance"],
+    content: `<p>Every founder knows the launch-day feeling: the product is live, the first customers are in, and the team that built it is about to disband. What most founders underestimate is that the work is only beginning. Software that is used gets bugs filed against it, browsers and dependencies move underneath it, and every new customer pushes a system that was built for zero of them.</p>
+<p>The question is not whether your SaaS needs engineering after launch — it does, continuously — but how you get it without overpaying for a full team or gambling on a freelancer who vanishes in a month. This is the case for the engineering retainer, and it is more honest than it sounds.</p>
+<h2>What Running Software Actually Costs</h2>
+<p>Once a product has users, the work splits into four streams that never go dry:</p>
+<ul>
+<li><strong>Keeping it alive.</strong> Uptime, error monitoring, performance, security patches, dependency updates. This is the unglamorous 40% of post-launch work that has no feature attached to it and no demo to show — until the night the site goes down.</li>
+<li><strong>Small, urgent changes.</strong> The Stripe webhook that needs a new event type, the export that breaks for one customer's timezone, the copy fix that has legal implications. Each one is a half-day task that would take you a week to ramp up on.</li>
+<li><strong>Steady incremental features.</strong> The roadmap after v1: integrations, admin tooling, the settings screen customers keep asking for. This is where a product either compounds or stalls.</li>
+<li><strong>Technical debt you can no longer ignore.</strong> The hacks that got you to launch now cost you a feature every sprint. Someone has to pay that down, and doing it between customer fires is the only way it ever happens.</li>
+</ul>
+<p>None of these are optional. The only real choice is who does them.</p>
+<h2>Why Not Hire?</h2>
+<p>A full-time engineer is the right answer for some companies — roughly the ones with enough sustained work to fill forty hours a week, every week, forever. Most early SaaS products do not have that yet. They have eight hours of real work this week and twenty next month, plus a production system that cannot be left unattended in between. Hiring for that means either overstaffing or under-using someone, and the cost of a senior engineer's salary, equity, and onboarding usually exceeds the value of the work until revenue is far past that point.</p>
+<h2>Why Not a Per-Project Freelancer?</h2>
+<p>Per-project engagements are great for well-defined chunks of work, and we run plenty of them. But post-launch maintenance is not well-defined. It arrives as a queue of small, unrelated, time-sensitive items that require context on your codebase that a fresh freelancer does not have — and every new freelancer spends your budget learning what the last one knew. The cost is not the hourly rate; it is the repeated onboarding, the context loss, and the fact that the person who responds fastest to a 3 AM outage is usually the one who already knows the system.</p>
+<h2>What a Retainer Actually Buys</h2>
+<p>A retainer is not a subscription to have an engineer on call — it is a commitment that a specific team holds context on your product for as long as you need it:</p>
+<ul>
+<li><strong>Continuity.</strong> The same engineers who built it (or who audited it) keep the context: how the data flows, where the sharp edges are, which tests actually protect you.</li>
+<li><strong>Priority.</strong> Your issues sit in a queue you share with other retainer clients, but you have a guaranteed slice of capacity every month — no cold-start ramp, no \"I'll start next week\".</li>
+<li><strong>Bounded cost.</strong> A fixed monthly number you can plan around, instead of invoices that spike with every incident.</li>
+<li><strong>Honest scoping.</strong> Good retainers cap the chaos: if a month's work exceeds the retainer, you find out before the invoice does, not after.</li>
+</ul>
+<h2>What a Good Retainer Relationship Looks Like</h2>
+<p>The best retainer arrangements run on a simple rhythm. A standing queue where you file work as it comes up. A weekly or biweekly check-in where the team triages: what is urgent, what is deferred, what is quietly becoming debt. A monthly summary that shows what shipped and what is next. The goal is that you never have to think about engineering operations — you think about your product, and the queue is always moving.</p>
+<p>That is the real product a retainer sells: not hours, but <em>removal of the operational tax</em> — the tax every live product pays in attention, context, and late-night pages. Whether you pay it to a team that knows your code, or in repeated ramp-ups and incident bills, you pay it either way.</p>
+<hr>
+<p><em>At <a href="/">Retro Engineering</a> we offer an <a href="/services">engineering retainer</a> — a fixed monthly engagement for maintenance, small features, and keeping your product healthy after launch. If you are pre-launch, this post is probably not for you yet; come back when the product has users, because that is exactly when it starts to matter.</em></p>`,
+  },
+
 ];
