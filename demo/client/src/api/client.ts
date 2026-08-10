@@ -7,8 +7,9 @@ import type {
   Plan,
   UserStatus,
 } from '../types';
-// The demo server mounts the API at /api (same origin as the static client).
-const BASE = '/api';
+// The SPA is served at /demo/ through the site's reverse proxy, so API calls
+// must include the /demo prefix to reach the demo backend.
+const BASE = '/demo/api';
 function getToken(): string | null {
   return localStorage.getItem('token');
 }

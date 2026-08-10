@@ -95,7 +95,7 @@ function DemoPage() {
           {/* ── Launch Button ─────────────────────────────────────────────── */}
           <div className="mt-10 text-center">
             <a
-              href="http://localhost:5173"
+              href="/demo/"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-8 py-4 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-400"

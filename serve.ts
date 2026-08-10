@@ -51,10 +51,14 @@ for (let attempt = 1; ; attempt++) {
         const url = new URL(req.url);
         const { pathname } = url;
 
-        // WebSocket proxy: /demo/ws → upstream demo backend
-        if (pathname === "/demo/ws") {
-          const token = url.searchParams.get("token") || "";
-          if (server.upgrade(req, { data: { type: "demo-ws", token } })) {
+        // WebSocket proxy: /demo/ws* → upstream demo backend
+        if (pathname === "/demo/ws" || pathname.startsWith("/demo/ws/")) {
+          const upstreamPath = pathname.slice("/demo".length) || "/";
+          if (
+            server.upgrade(req, {
+              data: { type: "demo-ws", upstreamPath, search: url.search },
+            })
+          ) {
             return; // upgraded
           }
           return new Response("WebSocket upgrade failed", { status: 400 });
@@ -63,7 +67,7 @@ for (let attempt = 1; ; attempt++) {
         // Demo proxy: forward /demo/* to the demo backend (regular HTTP)
         if (pathname.startsWith("/demo")) {
           const upstreamPath = pathname.slice("/demo".length) || "/";
-          const upstreamUrl = `${DEMO_BACKEND}${upstreamPath}`;
+          const upstreamUrl = `${DEMO_BACKEND}${upstreamPath}${url.search}`;
           const upstreamReq = new Request(upstreamUrl, {
             method: req.method,
             headers: req.headers,
@@ -95,13 +99,16 @@ for (let attempt = 1; ; attempt++) {
       },
       websocket: {
         open(ws) {
-          const data = ws.data as { type?: string; token?: string } | undefined;
+          const data = ws.data as
+            | { type?: string; upstreamPath?: string; search?: string }
+            | undefined;
           if (data?.type !== "demo-ws") return;
-          const token = data.token || "";
 
-          // Connect to the upstream demo backend WebSocket
+          // Connect to the upstream demo backend WebSocket, preserving the
+          // proxied path and query (/demo/ws/health → /ws/health,
+          // /demo/ws?token=… → /ws?token=…).
           const upstream = new WebSocket(
-            `ws://localhost:3001/ws?token=${encodeURIComponent(token)}`,
+            `ws://localhost:3001${data.upstreamPath || "/ws"}${data.search || ""}`,
           );
           (ws as any).__upstream = upstream;
 
