@@ -25,7 +25,7 @@ const products = [
     name: "Feature Sprint",
     price: "$2,500",
     description: "Scoped feature: spec, build, review, ship. 1-2 week timeline.",
-    paymentLink: "https://buy.stripe.com/14A6oHcSV3CS6nE122gEg0b",
+    paymentLink: "https://buy.stripe.com/6oU7sL3ilb5kdQ64eegEg0f",
     highlight: false,
   },
   {
@@ -33,7 +33,7 @@ const products = [
     price: "$7,500",
     description:
       "Full product: architecture, backend, frontend, tests, deployment. 4-6 weeks.",
-    paymentLink: "https://buy.stripe.com/28EcN5dWZdds3bsaCCgEg08",
+    paymentLink: "https://buy.stripe.com/eVqcN55qt2yO6nE9yygEg0g",
     highlight: true,
   },
   {
@@ -41,14 +41,14 @@ const products = [
     price: "$5,000",
     description:
       "Two-week dedicated sprint: architecture, feature build, code review, and deployment. Ideal for well-scoped projects.",
-    paymentLink: "https://buy.stripe.com/aFa00j1ad3CS4fw122gEg0e",
+    paymentLink: "https://buy.stripe.com/7sYdR92eh0qG9zQ9yygEg0h",
     highlight: false,
   },
   {
     name: "Technical Audit",
     price: "$1,250",
     description: "Architecture review, code audit, recommendations report. 1 week.",
-    paymentLink: "https://buy.stripe.com/8x214n5qt0qGaDUaCCgEg09",
+    paymentLink: "https://buy.stripe.com/00wfZh6uxflAbHYfWWgEg0i",
     highlight: false,
   },
   {
@@ -56,7 +56,7 @@ const products = [
     price: "$2,000/mo",
     description:
       "Monthly retainer for maintenance, bug fixes, incremental features.",
-    paymentLink: "https://buy.stripe.com/cNi00jg578Xc13kaCCgEg0a",
+    paymentLink: "https://buy.stripe.com/4gM4gz4mpc9o7rI8uugEg0j",
     highlight: false,
   },
 ];
