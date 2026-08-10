@@ -1,5 +1,10 @@
 import { createServerFn } from "@tanstack/react-start";
-import { appendFile, readFile } from "node:fs/promises";
+
+// Node built-ins must be imported dynamically inside server functions —
+// top-level static imports are processed by the client bundler and break.
+async function fs() {
+  return import("node:fs/promises");
+}
 
 /**
  * Newsletter infrastructure — subscribers and delivery queues.
@@ -25,7 +30,7 @@ export function isValidEmail(email: string): boolean {
 export async function readSubscribers(): Promise<Subscriber[]> {
   let raw: string;
   try {
-    raw = await readFile(SUBSCRIBERS_FILE, "utf8");
+    raw = await (await fs()).readFile(SUBSCRIBERS_FILE, "utf8");
   } catch (e) {
     if ((e as { code?: string }).code === "ENOENT") return [];
     throw e;
@@ -62,8 +67,9 @@ export const subscribeNewsletter = createServerFn({ method: "POST" })
     const subscribedAt = new Date().toISOString();
     const record = { email: data.email, subscribedAt };
     // Subscriber first, then the welcome-email queue job — never sent directly.
-    await appendFile(SUBSCRIBERS_FILE, JSON.stringify(record) + "\n");
-    await appendFile(
+    const { appendFile: af } = await fs();
+    await af(SUBSCRIBERS_FILE, JSON.stringify(record) + "\n");
+    await af(
       WELCOME_QUEUE_FILE,
       JSON.stringify({ ...record, status: "pending" }) + "\n",
     );
@@ -99,6 +105,7 @@ export const sendNewsletter = createServerFn({ method: "POST" })
       status: "pending" as const,
       createdAt: new Date().toISOString(),
     };
-    await appendFile(SEND_QUEUE_FILE, JSON.stringify(job) + "\n");
+    const { appendFile: af } = await fs();
+    await af(SEND_QUEUE_FILE, JSON.stringify(job) + "\n");
     return { success: true, recipientCount: recipients.length };
   });
