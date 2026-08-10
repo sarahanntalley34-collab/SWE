@@ -66,18 +66,21 @@ const intervals = new WeakMap<ServerWebSocket<string>, ReturnType<typeof setInte
 /**
  * Handle a new WebSocket connection. Verifies the JWT from the ?token= query param.
  * Returns the user payload if authenticated, or null if auth failed (caller should close).
+ *
+ * Standalone mode passes the token via server.upgrade() data; when the demo is
+ * embedded in another server (the site's serve.ts), the caller passes it in
+ * explicitly because that server's upgrade data carries routing info instead.
  */
-export function handleWebSocketOpen(ws: ServerWebSocket<string>): JwtPayload | null {
-  // Token was passed via server.upgrade() data during the upgrade
-  const token = ws.data;
+export function handleWebSocketOpen(ws: ServerWebSocket<string>, token?: string): JwtPayload | null {
+  const authToken = token ?? ws.data;
 
-  if (!token) {
+  if (!authToken) {
     ws.send(JSON.stringify({ error: "Missing token query parameter" }));
     ws.close(4001, "Missing token");
     return null;
   }
 
-  const user = verifyToken(token);
+  const user = verifyToken(authToken);
   if (!user) {
     ws.send(JSON.stringify({ error: "Invalid or expired token" }));
     ws.close(4002, "Invalid token");
