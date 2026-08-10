@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { readFile } from "node:fs/promises";
+import { NewsletterSignup } from "~/components/NewsletterSignup";
 
 const getBusinessName = createServerFn({ method: "GET" }).handler(async () => {
   try {
@@ -128,9 +129,19 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Section({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+function Section({
+  children,
+  className = "",
+  id,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  id?: string;
+}) {
   return (
-    <section className={`px-6 py-20 sm:px-8 lg:px-12 ${className}`}>{children}</section>
+    <section id={id} className={`px-6 py-20 sm:px-8 lg:px-12 ${className}`}>
+      {children}
+    </section>
   );
 }
 
@@ -342,6 +353,20 @@ function Home() {
           </button>
         </div>
       )}
+
+      {/* ── Newsletter ──────────────────────────────────────────────────── */}
+      <Section className="bg-gray-50 dark:bg-gray-900">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+            Build with confidence, learn along the way
+          </h2>
+          <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
+            One email per week — practical advice on architecture, shipping, and
+            running a lean engineering team. No spam, unsubscribe anytime.
+          </p>
+          <NewsletterSignup className="mt-8" />
+        </div>
+      </Section>
 
       {/* ── Footer ────────────────────────────────────────────────────────── */}
       <footer className="border-t border-gray-200 px-6 py-8 dark:border-gray-800 sm:px-8 lg:px-12">
