@@ -69,3 +69,16 @@
 .blog-content em {
   @apply text-gray-600 dark:text-gray-400;
 }
+
+/* ── Print styles (checklist page) ──────────────────────────────────────── */
+@media print {
+  header {
+    display: none !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+  }
+}

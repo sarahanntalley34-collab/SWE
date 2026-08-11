@@ -147,6 +147,16 @@ function BlogPostPage() {
             running a lean engineering team. No spam, unsubscribe anytime.
           </p>
           <NewsletterSignup className="mt-6" />
+          <p className="mt-6 text-sm text-gray-500 dark:text-gray-500">
+            Prefer something to work through? Get the free{" "}
+            <a
+              href="/checklist"
+              className="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+            >
+              SaaS Technical Health Checklist
+            </a>
+            .
+          </p>
         </div>
       </Section>
 
