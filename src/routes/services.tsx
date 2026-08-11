@@ -10,6 +10,14 @@ export const Route = createFileRoute("/services")({
 
 const products = [
   {
+    name: "Technical Audit",
+    price: "$1,250",
+    description: "Architecture review, code audit, recommendations report. 1 week.",
+    paymentLink: "https://buy.stripe.com/00wfZh6uxflAbHYfWWgEg0i",
+    highlight: false,
+    startHere: true,
+  },
+  {
     name: "Feature Sprint",
     price: "$2,500",
     description: "Scoped feature: spec, build, review, ship. 1-2 week timeline.",
@@ -30,13 +38,6 @@ const products = [
     description:
       "Two-week dedicated sprint: architecture, feature build, code review, and deployment. Ideal for well-scoped projects.",
     paymentLink: "https://buy.stripe.com/7sYdR92eh0qG9zQ9yygEg0h",
-    highlight: false,
-  },
-  {
-    name: "Technical Audit",
-    price: "$1,250",
-    description: "Architecture review, code audit, recommendations report. 1 week.",
-    paymentLink: "https://buy.stripe.com/00wfZh6uxflAbHYfWWgEg0i",
     highlight: false,
   },
   {
@@ -144,6 +145,16 @@ function Services() {
           <p className="mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
             Five ways to work with us — from quick sprints to ongoing partnerships.
           </p>
+          <div className="mt-8 flex flex-col items-start gap-3 rounded-xl border border-gray-200 bg-white px-6 py-5 shadow-sm dark:border-gray-800 dark:bg-gray-950 sm:flex-row sm:items-center">
+            <span className="inline-flex shrink-0 rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-green-700 dark:bg-green-950 dark:text-green-400">
+              New here?
+            </span>
+            <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+              Not sure which engagement fits? Start with the Technical Audit —
+              $1,250, one week, written findings. It's the smallest commitment,
+              and the report tells you which of the others you actually need.
+            </p>
+          </div>
           <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((product) => (
               <div
@@ -157,6 +168,11 @@ function Services() {
                 {product.highlight && (
                   <span className="mb-4 inline-flex self-start rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-indigo-600 dark:bg-indigo-950 dark:text-indigo-400">
                     Popular
+                  </span>
+                )}
+                {product.startHere && (
+                  <span className="mb-4 inline-flex self-start rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-green-700 dark:bg-green-950 dark:text-green-400">
+                    Best first step
                   </span>
                 )}
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
