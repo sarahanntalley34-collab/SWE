@@ -199,6 +199,7 @@ export const blogPosts: BlogPost[] = [
 <p>Technical debt is normal — every product with users has some. The problem isn't that debt exists; it's that nobody knows where it is or how bad it is. An audit converts vague anxiety into a concrete list, which is exactly what you need to plan the next few months of engineering.</p>
 
 <p>If two or three of the signs above feel familiar, get a second opinion on the code before you pour more money into it.</p>
+<p><strong>Want to check your own SaaS before you pay anyone?</strong> Work through our free <a href="/checklist">SaaS Technical Health Checklist</a> — 20+ concrete checks across architecture, testing, monitoring, security, backups, and more. It's yours with the newsletter.</p>
 
 <hr>
 <p><em>Retro Engineering offers a <a href="/services">Technical Audit</a> — one week, a prioritized report, and no obligation to hire us afterward. <a href="/contact">Get in touch</a>.</em></p>`,
@@ -860,7 +861,8 @@ function useWebSocket(token: string) {
 <h2>The Real Cost Question</h2>
 <p>Ask not "what does an audit cost?" but "what is the debt costing every month?" If the answer to the second question is bigger than the first, the decision makes itself. Most founders we talk to can feel the tax in their roadmap before they can name it — the audit is what turns the feeling into a number, and the number into a plan.</p>
 
-<p>At <a href="/">Retro Engineering</a> we run <a href="/services">technical audits</a> as a fixed-scope engagement — a focused look at architecture, security, operations, and code quality, ending with a prioritized findings list you can act on. We will also tell you plainly if we do not think you need one yet.</p>`
+<p>At <a href="/">Retro Engineering</a> we run <a href="/services">technical audits</a> as a fixed-scope engagement — a focused look at architecture, security, operations, and code quality, ending with a prioritized findings list you can act on. We will also tell you plainly if we do not think you need one yet.</p>
+<p><strong>Not sure where your product stands?</strong> Start with the free <a href="/checklist">SaaS Technical Health Checklist</a> — 20+ plain-language checks across architecture, testing, monitoring, security, and backups, so you know what to look for before commissioning an audit.</p>`
   },
   {
     slug: "engineering-retainer-after-launch",
@@ -1075,6 +1077,7 @@ function useWebSocket(token: string) {
 <p>If you have a proposal you cannot evaluate — or a codebase you are about to bet on — there is a cheaper way to find out than signing it. A fixed-price Technical Audit reviews the code and the plan and comes back with written findings: what is solid, what is risky, and what the work would realistically involve. It is $1,250, takes one week, and the output is a document you can take to any vendor — or use to walk away from a bad deal. Compared with the cost of discovering the problems after you sign, it is the cheapest insurance in the process.</p>
 
 <p>Nobody can tell you from a sales call whether a vendor is good. But the proposal is a written artifact you can interrogate, and most of the time it answers the question for you — if you read it like a contract instead of a promise. <a href="/services">Our services page</a> lists the audit and the other engagements, with prices and what each one delivers.</p>
+<p>And if you want to check the product you already have — not just a proposal — the free <a href="/checklist">SaaS Technical Health Checklist</a> is a plain-language place to start: 20+ checks you can work through in an afternoon.</p>
 
 <hr>
 <p><em>Retro Engineering is a team of 3 senior engineers. If you are evaluating a build — ours or anyone else's — <a href="/services">see our services</a> or <a href="/contact">get in touch</a>.</em></p>`,
