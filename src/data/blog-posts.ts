@@ -1022,5 +1022,62 @@ function useWebSocket(token: string) {
 
 <p>If you are still not sure which shape fits, that is a normal place to be. <a href="/services">Our services page</a> walks through each engagement and what it includes — and if you do not need one of them yet, we will tell you that plainly.</p>`,
   },
+  {
+    slug: "vetting-development-proposals",
+    title: "How to Vet a Development Agency or Freelancer Proposal",
+    date: "2026-08-18",
+    excerpt: "Rate is the last thing to compare. A good proposal is a written argument about scope, deliverables, and who actually does the work — a bad one is a number and a handshake. What to look for before you sign, and the red flags that should make you walk.",
+    tags: ["Founders", "Hiring", "Engineering", "Audit"],
+    content: `<p>Founders ask the same question before every engagement: "how do I know if this agency or freelancer is any good?" The honest answer is that you can't — not from a sales call, not from a portfolio, and definitely not from a rate card. What you can evaluate is the proposal. It is the one artifact a development shop produces before any money changes hands, and it tells you more about how the work will actually go than the salesperson ever will. Here is how to read one.</p>
+
+<h2>Rate Is the Wrong Lens</h2>
+
+<p>The first thing most founders compare is the hourly rate, and it is the least informative number on the page. Rate tells you what a vendor charges for time; it tells you nothing about how much time the work will take, which is the number that actually determines your cost. Two vendors can quote the same feature, one at $80/hour and one at $160/hour, and the expensive one can still come in cheaper if its estimate is half the size. Worse, a rate-only quote hides the real variable entirely: scope.</p>
+
+<p>Scope is where the risk lives. A fixed-scope quote says "we will deliver these specific things for this specific price," which means the vendor eats the overrun if the work takes longer than expected. Time-and-materials says "we will bill you for however long it takes," which means you eat it. Neither is evil — T&M is the right choice for exploratory work with no defined endpoint — but they are not the same product, and you should know which one you are being sold. And when a proposal says "estimated," it is not promising that number; it is promising that the estimate was made in good faith against a written scope. If there is no written scope, the estimate is a guess dressed up in a spreadsheet.</p>
+
+<p>This is also why a good estimate comes with a range and the reasoning behind it. "6–8 weeks, and here is what pushes it long or short" is a real estimate; "6–8 weeks" with nothing behind it is a guess. The reasoning matters because it tells you the vendor actually decomposed the work into pieces they can count — which is the best evidence they understand it.</p>
+
+<h2>What a Good Proposal Contains</h2>
+
+<p>A proposal is, at bottom, a written promise. The question is whether the promise is specific enough that you could hold them to it. Strip out the marketing paragraphs, and a good proposal is a checklist:</p>
+
+<ul>
+  <li><strong>The spec and the assumptions.</strong> The proposal should reference a written description of what will be built — features, screens, data, integrations — and call out what is assumed and what is explicitly out of scope. If it is built on nothing but the sales call, the price is not anchored to anything.</li>
+  <li><strong>Deliverables as shipped things, not hours.</strong> "One engineer for 200 hours" is not a deliverable. "A working signup flow with Stripe billing, deployed to your account, with tests" is. Every line item should end in something you can click, read, or test.</li>
+  <li><strong>Who actually does the work.</strong> The proposal should name the engineers. Senior engineers cost more and produce less drama; juniors are cheaper and need supervision you will end up paying for. And the salesperson who charms you will not be writing the code — ask who will, and whether that person has seen the scope.</li>
+  <li><strong>Testing and QA as a line item.</strong> If testing is not in the proposal, it is not in the budget, and it will not happen. A proposal that lists code review and tests explicitly is spending money on things you will otherwise buy later with interest.</li>
+  <li><strong>Communication cadence.</strong> How often will you hear from them, in what form, and how do problems get surfaced? Vendors who email you bad news early are the ones you can work with; the ones who go quiet for three weeks and resurface with a "small complication" are not.</li>
+  <li><strong>What happens when scope creeps.</strong> It will. A good proposal has a change process: changes get priced and approved in writing before work starts, and the original scope is the baseline every change is measured against.</li>
+  <li><strong>Exit terms.</strong> Who owns the code, the accounts, and the deploys if you stop mid-project? What do you receive — repositories, documentation, credentials — and on what timeline? If the answer is "let's not worry about that," worry about it.</li>
+</ul>
+
+<h2>Red Flags</h2>
+
+<p>Some signals are close to disqualifying on their own:</p>
+
+<ul>
+  <li><strong>Vague timelines.</strong> "Soon," "fast," or "aggressively" are not dates. A timeline should name milestones and what each one produces.</li>
+  <li><strong>A rate-only quote.</strong> "$95/hour, estimated 300 hours" with no scope behind it is not a proposal; it is a starting point for arguments.</li>
+  <li><strong>No written spec.</strong> If they will not write down what they are building before they build it, they will not know when it is done — and neither will you.</li>
+  <li><strong>"Trust us" in place of references.</strong> Named previous clients you can actually contact, or a demo you can click, are evidence. Testimonials are decoration.</li>
+  <li><strong>Overpromising.</strong> A three-month build "guaranteed in two weeks" is not confidence, it is a sales technique. Every competent engineer knows estimates have ranges, and anyone who promises certainty is betting you will not hold them to it.</li>
+  <li><strong>Refusing to name the engineers.</strong> If the people doing the work cannot be introduced before you sign, ask yourself why. The bench is the product.</li>
+  <li><strong>A proposal that could be anyone's.</strong> If the document never mentions your product, your users, or your constraints, it was cut and pasted from the last three proposals they sent. A vendor who cannot be specific about your project before you sign will not be specific during it.</li>
+</ul>
+
+<h2>How to Compare Two Quotes Fairly</h2>
+
+<p>You can only compare proposals on equal terms. Write your own one-page scope — features, screens, users, integrations, and what is explicitly not included — and send the same document to everyone. Then compare: total price, timeline, deliverables, who does the work, what testing looks like, and what happens if the scope changes. Same spec, same deliverables, then compare. Pitting a detailed fixed-scope proposal against a two-line rate quote is comparing a contract to a vibe, and the vibe will lose you more money.</p>
+
+<h2>When You're Still Not Sure</h2>
+
+<p>If you have a proposal you cannot evaluate — or a codebase you are about to bet on — there is a cheaper way to find out than signing it. A fixed-price Technical Audit reviews the code and the plan and comes back with written findings: what is solid, what is risky, and what the work would realistically involve. It is $1,250, takes one week, and the output is a document you can take to any vendor — or use to walk away from a bad deal. Compared with the cost of discovering the problems after you sign, it is the cheapest insurance in the process.</p>
+
+<p>Nobody can tell you from a sales call whether a vendor is good. But the proposal is a written artifact you can interrogate, and most of the time it answers the question for you — if you read it like a contract instead of a promise. <a href="/services">Our services page</a> lists the audit and the other engagements, with prices and what each one delivers.</p>
+
+<hr>
+<p><em>Retro Engineering is a team of 3 senior engineers. If you are evaluating a build — ours or anyone else's — <a href="/services">see our services</a> or <a href="/contact">get in touch</a>.</em></p>`,
+  },
 
 ];
