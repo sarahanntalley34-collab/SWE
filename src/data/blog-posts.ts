@@ -1166,4 +1166,51 @@ function useWebSocket(token: string) {
 `,
   },
 
+  {
+    slug: "saas-technical-health-checklist-explained",
+    title: "The SaaS Technical Health Checklist, Explained",
+    date: "2026-09-01",
+    excerpt: "Most founders can't tell whether their SaaS is healthy until it hurts. The eight checks from the SaaS Technical Health Checklist with the most founder-visible value — what each one means in plain language, why it matters, and what it looks like when it's broken.",
+    tags: ["Engineering", "SaaS", "Monitoring", "Founders"],
+    content: `<p>Most founders cannot tell whether their product is healthy — until it hurts. There is no dashboard for codebase health. The signs arrive late and loud: an outage on a Saturday, a security scare from a committed API key, or the quieter feeling that every change takes twice as long as it should.</p>
+<p>The problem is rarely that the engineering is bad. It is that "healthy" was never defined, so nobody could check. This post walks through the most important checks from the <a href="/checklist">SaaS Technical Health Checklist</a> — the ones with the most founder-visible value — in plain language: what each check is, why it matters, and what it looks like when it is broken.</p>
+<h2>The checks that matter most</h2>
+<p>The full checklist is 23 checks across 8 categories. Here are the eight with the most founder-visible value.</p>
+<h2>1. Every deploy is fully automated from main</h2>
+<p><strong>What it means.</strong> Shipping is one action: merge to main, and the pipeline builds, tests, and deploys. Nobody logs into a server. Nobody runs the sequence of terminal commands that only one person knows.</p>
+<p><strong>Why it matters.</strong> The deploy path is the part of your system your team touches most often, and it is where mistakes are most visible. When deploying is cheap and boring, teams ship more often, in smaller pieces, and roll back faster when something goes wrong. When it is a ritual, releases become events — and events are where judgment errors happen.</p>
+<p><strong>What it looks like when it's broken.</strong> "Deploy day" is a scheduled event. There is a document with fifteen manual steps, half of which only Dave understands. Releases happen on Fridays, only when Dave is available, and the rollback plan is "git revert and hope." If a deploy depends on a person instead of a pipeline, that is a risk with a timer on it.</p>
+<h2>2. The critical paths have automated tests that run on every pull request</h2>
+<p><strong>What it means.</strong> The flows that make you money — signup, auth, billing, data export — have automated tests that run on every change, and a failing test blocks the deploy. Nobody has to remember to run the suite.</p>
+<p><strong>Why it matters.</strong> Tests are the cheapest safety net you will ever buy. A regression that would have cost you a day of customer-facing breakage costs five minutes when a test catches it before release. The blocking part matters too: a suite that runs but does not gate releases is decoration.</p>
+<p><strong>What it looks like when it's broken.</strong> "We test manually before release" — which means testing happens rarely and covers only whatever the tester remembered that day. Every change to billing logic is a small panic. If a bug that breaks checkout takes hours to notice, your safety net has holes.</p>
+<h2>3. Alerts fire on real failure signals</h2>
+<p><strong>What it means.</strong> You get alerted on the signals that actually indicate failure — 5xx spikes, error rate, queue depth — and the alerts are few enough that people act on them.</p>
+<p><strong>Why it matters.</strong> The alternative is finding out your product is down from a customer's tweet or a churn email. An alert that fires on a real failure is the difference between a ten-minute incident and a three-day one — and between apologizing and fixing.</p>
+<p><strong>What it looks like when it's broken.</strong> Either no alerts at all, or so many that everyone ignores them. The team learns about the outage when the support inbox fills up. If you have ever found out about a problem from a customer, your alerting is not working.</p>
+<h2>4. The screens and API calls users depend on are measured</h2>
+<p><strong>What it means.</strong> The pages and endpoints your users actually touch are measured — response times, error rates — so regressions show up as numbers, not complaints. Logs are searchable from one place, with request IDs that connect frontend, backend, and database.</p>
+<p><strong>Why it matters.</strong> When a user says "the app is slow," your team can pull up the actual request and see where the time went in minutes. Without measurement, "slow" is a feeling; with it, it is a number with a cause.</p>
+<p><strong>What it looks like when it's broken.</strong> "The site feels slow sometimes," and nobody can say for whom, when, or why. A user's bug report cannot be traced through the system. Support and engineering talk past each other — no shared picture of what happened.</p>
+<h2>5. The database is backed up automatically — and restores are actually tested</h2>
+<p><strong>What it means.</strong> Backups run on a schedule, and someone actually restores from them on a regular basis. A backup you have never restored is a hope, not a plan.</p>
+<p><strong>Why it matters.</strong> Every experienced engineer has a story about the backup that was corrupt, or the restore that took three days, or the job that quietly stopped running in March. The only way to know your backup works is to use it — before you need it.</p>
+<p><strong>What it looks like when it's broken.</strong> Backups were configured once, years ago, and never checked. When the database is dropped at 2am — by a bad migration or a mistaken script — you discover the backups stopped months ago. That is a conversation no founder wants to have with their customers.</p>
+<h2>6. Dependencies are updated on a cadence, and scanned for known vulnerabilities</h2>
+<p><strong>What it means.</strong> Upgrades happen on a schedule, not only when something breaks. Nothing is pinned forever "because it works." Dependencies are scanned for known vulnerabilities, and every critical finding has an owner.</p>
+<p><strong>Why it matters.</strong> An abandoned dependency is a ticking bomb — both a security risk and a maintenance one. When upgrades are a habit, they are boring and cheap. When they are avoided, they compound into a panic project that has to happen anyway, at the worst possible time.</p>
+<p><strong>What it looks like when it's broken.</strong> "We don't touch dependencies" is an actual strategy. The framework is three major versions behind, the upgrade everyone has been dreading has grown into a project of its own, and a known vulnerability in a core library has no named owner. If you cannot answer who owns a critical CVE in a package you use, that is your answer.</p>
+<h2>7. A new engineer can run the whole stack from the README</h2>
+<p><strong>What it means.</strong> Documentation and runbooks exist before they are needed: a new person gets the stack running locally from the README, runbooks are written before the 2am incident, and architecture decisions record their reasons.</p>
+<p><strong>Why it matters.</strong> Knowledge held in one head is a risk. When the person who built the deploy or the payment integration leaves, the knowledge leaves with them. Documentation is how a team makes its experience durable instead of personal.</p>
+<p><strong>What it looks like when it's broken.</strong> "Ask Dave" is the documentation. Onboarding a new engineer takes weeks instead of days. Runbooks do not exist, so at 2am someone is improvising a recovery procedure while the site is down. If your team cannot survive one person taking a vacation, the knowledge is too concentrated.</p>
+<h2>8. Secrets live in the secret store, and authorization is enforced server-side</h2>
+<p><strong>What it means.</strong> API keys and credentials live in the platform's secret store — never in the repo, docs, or chat history. Access control is enforced on the server: hiding a button in the UI is not a permission.</p>
+<p><strong>Why it matters.</strong> These two are the most common ways SaaS products get compromised. A committed API key or a client-side-only permission check is a breach waiting to happen — not a question of if, but when.</p>
+<p><strong>What it looks like when it's broken.</strong> There is an API key in a .env file that got committed to the repository, pasted into a README, or shared in Slack history. An admin endpoint trusts the UI not to show the button. Neither of these fails today — they fail the day someone with the link or the history finds them.</p>
+<h2>The honest close</h2>
+<p>These eight checks are the ones with the most founder-visible value, but they are not the whole list. The full checklist is <strong>23 checks across 8 categories</strong> — architecture, testing, monitoring and observability, security, backups and recovery, performance, dependencies, and docs and onboarding. The rest matter in year two and year three: performance budgets, slow-query discipline, data model review, deterministic tests, runbooks with an owner. They are the difference between a product that is healthy today and one that stays healthy as it grows.</p>
+<p>If you want to work through all of them — in plain language, in an afternoon — <a href="/checklist">the full checklist is free</a> when you join the newsletter: one practical post a week on shipping SaaS, plus the printable checklist. No spam, unsubscribe anytime. That is the whole deal.</p>
+<p>And if you would rather have someone run this checklist against your actual code, that is what a <a href="/blog/what-actually-happens-in-a-technical-audit">technical audit</a> is: a week, a written report, and every finding tied to evidence — plus the honest verdict when your codebase turns out to be healthier than you feared.</p>`,
+  },
 ];
