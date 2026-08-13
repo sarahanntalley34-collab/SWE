@@ -25,6 +25,7 @@ export const Route = createRootRoute({
       meta: [
         { charSet: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { name: "google-site-verification", content: "-Nb6pSHQF5NvGnf5Hi5RRCGH3o9pZiZGkrxKosZSyOU" },
         { title: SITE_TITLE },
         { name: "description", content: SITE_DESCRIPTION },
         // Open Graph
