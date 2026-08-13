@@ -1083,4 +1083,87 @@ function useWebSocket(token: string) {
 <p><em>Retro Engineering is a team of 3 senior engineers. If you are evaluating a build — ours or anyone else's — <a href="/services">see our services</a> or <a href="/contact">get in touch</a>.</em></p>`,
   },
 
+  {
+    slug: "what-actually-happens-in-a-technical-audit",
+    title: "What Actually Happens in a Technical Audit",
+    date: "2026-08-25",
+    excerpt: "You are about to spend $1,250 on an audit and you cannot see what you are buying. Here is exactly what happens in the week — what the audit covers, what you have to provide, what the report contains, and what it is not — so you can decide with your eyes open.",
+    tags: ["Engineering", "Audit", "Founders"],
+    content: `<p>You are a founder with $1,250 in your pocket and a nagging feeling that something is wrong with your codebase. You read the services page: "Architecture review, code audit, recommendations report. 1 week." That is a description, not an answer. What actually happens in that week — who reads what, what you do, and what lands in your inbox on day five?</p>
+
+<p>This post walks through the Technical Audit the way we actually run it — no invented heroics, no promises we cannot keep. If you are deciding whether to spend the money, this is what you are buying.</p>
+
+<h2>Why an Audit Is Hard to Buy Blind</h2>
+
+<p>Most engineering services sell something you can see: an MVP build ends in a product you can click, a sprint in a feature that ships. An audit ends in a document — the easiest deliverable in the world to fake and the hardest to evaluate until you have read one. The short answer: an independent second opinion on your codebase — written down, ranked by what hurts, with evidence for every claim. Think of it as a pre-purchase inspection on a car you already own: it tells you what it will cost to keep driving it.</p>
+
+<h2>What the Audit Covers</h2>
+
+<p>We look for the things that will cost you money in year two. That is the filter for everything in the report: not "is this code pretty," but "will this bite us when the product grows, the team changes, or a reviewer reads it."</p>
+
+<ul>
+  <li><strong>Architecture.</strong> Are the boundaries between frontend, backend, and database clean? Can you swap a third-party service without rewriting everything? Is the data model shaped for how the product is actually used?</li>
+  <li><strong>Code quality and maintainability.</strong> Not style nitpicks — structural quality. Duplicated logic, god objects, code that only one person understands, and whether the next engineer can pick this up in a week or a quarter.</li>
+  <li><strong>Tests and CI.</strong> What is covered, what is not, whether the test suite actually runs, and whether the pipeline blocks bad merges or just files them away.</li>
+  <li><strong>Security basics.</strong> Auth, authorization, secrets management, input validation, admin panels with no extra protection. Not a penetration test — the basics that keep you out of the news.</li>
+  <li><strong>Dependencies.</strong> What is pinned, what is abandoned, what has known vulnerabilities, and which package is one update away from breaking your login.</li>
+  <li><strong>Operations and monitoring.</strong> Logging, error tracking, backups, the deploy pipeline, the rollback story. A system nobody can observe is a system nobody can operate — and it will fail at 3 AM, alone.</li>
+</ul>
+
+<p>Six areas sounds like a lot. It is — that is why the audit takes a week rather than a day, and why it runs against a written checklist instead of being improvised as we go. Every codebase gets the same questions, so findings are comparable and nothing gets skipped because it was awkward to raise.</p>
+
+<h2>How the Week Runs</h2>
+
+<p>Here is the truthful version, in order.</p>
+
+<p><strong>Day one: intake.</strong> You give us read access to the repository and answer a short questionnaire about the product, the team, and the parts of the system you are nervous about. Then a 30-minute context call. We ask about your pain points, and we want honest answers: where it hurts, what broke last month, which feature you dread touching. You know your product better than we will after a week of reading code — the best findings combine what you tell us with what the code shows.</p>
+
+<p><strong>Days two to four: the review.</strong> This is the quiet part. We read the repository systematically, area by area. We trace the important flows end to end: signup, billing, auth, the core workflow that makes you money. We read it the way a new senior engineer would have to, because that is the question the audit answers: what does this codebase demand of the next person who works in it?</p>
+
+<p><strong>Days four to five: writing.</strong> Findings get written, ranked, and checked against evidence. Nothing goes in the report without a reference — a file, a line, a failing test — so you can verify it yourself. Writing it takes as long as reading the code did.</p>
+
+<p>That is the whole week. What we ask from you is small: repo access, thirty minutes for the context call, and honest answers. No daily status meetings, no standing calls. The work is reading, thinking, and writing — and the fixed price means we are not selling you any more of it than the audit needs.</p>
+
+<h2>What the Report Contains</h2>
+
+<p>The report is a written findings list, ranked by severity and impact, with three things on every finding: what the problem is, the evidence it is real, and the cost of fixing it now versus later. Then everything is summarized into three buckets:</p>
+
+<ul>
+  <li><strong>Fix now.</strong> Security holes, data-integrity risks, and the operational failures that will eventually take the site down. Usually a small number of items — most audits find one or two.</li>
+  <li><strong>Fix soon.</strong> The structural issues that are slowing you down today: the module where every bug lives, the missing tests around the money paths, the deploy that takes an afternoon.</li>
+  <li><strong>Watch.</strong> Everything that is fine for years but worth revisiting when you touch it anyway. Most of the report lives here — and that is a good thing.</li>
+</ul>
+
+<p>The report is the plan, not the work. You can hand it to your own team, a new vendor, or us — the findings stand on their own, because they were written to.</p>
+
+<h2>What an Audit Is Not</h2>
+
+<p>Three things founders worry about when they buy one.</p>
+
+<p><strong>It is not a sales pitch for a rewrite.</strong> The audit's job is to tell the truth about the code, and sometimes the truth is that the code is fine. When that happens, we say so. A rewrite recommendation that does not survive contact with the evidence is not a finding — it is a pitch. Be suspicious of anyone whose audits always end in "rebuild it all with us."</p>
+
+<p><strong>It is not a guarantee.</strong> An audit is a point-in-time assessment of the repository. It cannot promise you will never have an outage — anyone who promises that is selling something other than an audit. What it can do is show you which failure modes are real and which are unlikely, so you spend attention where the risk actually is.</p>
+
+<p><strong>It is not a billable-hours fishing trip.</strong> This one is structural. The audit is fixed-price: $1,250, one week, a written report — and that changes the incentive completely. Time-and-materials makes money the longer it runs; a fixed-price audit makes money when it finishes and the findings are useful. There is no reason to pad the review or invent problems: the faster and more honest we are, the better the engagement works for both sides.</p>
+
+<h2>What Founders Do With It Afterwards</h2>
+
+<p>The report is not the end of the process — it is the start of the decision. With the findings in hand, the choice about what to do next becomes a business decision instead of a leap of faith:</p>
+
+<ul>
+  <li><strong>Keep going.</strong> The "watch" bucket is where most healthy codebases land. Nothing structural is broken; the answer is to keep shipping and fix the small stuff as you touch it.</li>
+  <li><strong>Sprint.</strong> The "fix soon" bucket is real and bounded. A scoped sprint can execute the top findings — the module that needs refactoring, the missing tests around the money paths — ending in a shipped result.</li>
+  <li><strong>Rebuild — rarely.</strong> If the findings show a foundation that will fight you for years, the audit gives you the evidence to make that expensive call with your eyes open, instead of discovering it six months into a feature you cannot ship.</li>
+</ul>
+
+<p>That is the path the audit feeds: assessment first, then the engagement that matches the findings. It is why the Technical Audit is the entry offer on our <a href="/services">services page</a> — $1,250, one week, a written prioritized report — and why the most common next step after an audit is a sprint to execute the top findings or a retainer to keep the product healthy month to month. The document is yours — take it to us or to anyone else.</p>
+
+<h2>The Honest Close</h2>
+
+<p>One last thing. If your codebase is healthy, the audit will tell you that too — and that is a good outcome. Most founders commission an audit braced for bad news, and a lot of them get a report that mostly says: this is fine, fix these five small things, keep going. That is not a wasted $1,250. It is the price of replacing vague anxiety with certainty — and certainty is what lets you spend your next engineering dollar on building instead of worrying.</p>
+
+<p>Not sure whether your codebase is the problem at all? The free <a href="/checklist">SaaS Technical Health Checklist</a> is twenty-odd plain-language checks you can work through in an afternoon — before you spend anything.</p>
+`,
+  },
+
 ];
