@@ -6,6 +6,18 @@ import logo from "~/assets/logo.png";
 export const Route = createFileRoute("/")({
   loader: () => BUSINESS_NAME,
   component: Home,
+  head: () => ({
+    meta: [
+      { title: "Retro Engineering — SaaS & Web App Engineering" },
+      {
+        name: "description",
+        content:
+          "A small, focused engineering team that ships production-quality SaaS end-to-end — architecture, backend, frontend, and testing.",
+      },
+      { property: "og:title", content: "Retro Engineering — SaaS & Web App Engineering" },
+      { name: "twitter:title", content: "Retro Engineering — SaaS & Web App Engineering" },
+    ],
+  }),
 });
 
 // ── Data ──────────────────────────────────────────────────────────────────────

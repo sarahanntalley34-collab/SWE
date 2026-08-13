@@ -4,6 +4,18 @@ import { BUSINESS_NAME } from "~/lib/business";
 export const Route = createFileRoute("/services")({
   loader: () => BUSINESS_NAME,
   component: Services,
+  head: () => ({
+    meta: [
+      { title: "Services & Pricing — Retro Engineering" },
+      {
+        name: "description",
+        content:
+          "Technical audits, feature sprints, MVP builds, and engineering retainers — fixed prices, a one-week audit entry offer, and production-quality delivery.",
+      },
+      { property: "og:title", content: "Services & Pricing — Retro Engineering" },
+      { name: "twitter:title", content: "Services & Pricing — Retro Engineering" },
+    ],
+  }),
 });
 
 // ── Data ──────────────────────────────────────────────────────────────────────
