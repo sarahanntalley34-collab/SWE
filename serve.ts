@@ -222,6 +222,25 @@ if (pathname === "/api/contact") {
   }
 }
 
+
+// Contact API: list inquiries (JSON GET) — admin read path for the
+// contact-inquiries page (/admin/contact). Plain route so it works on the
+// published host, mirroring the /api/newsletter-subscribers dispatch.
+if (pathname === "/api/contact-messages") {
+  if (req.method !== "GET") {
+    return Response.json({ error: "Method not allowed" }, { status: 405 });
+  }
+  try {
+    const { GET: contactMessagesGet } = await import(
+      "./src/routes/api/contact-messages.ts"
+    );
+    return await contactMessagesGet();
+  } catch (error) {
+    Sentry.captureException(error);
+    return Response.json({ error: "Failed to read messages" }, { status: 500 });
+  }
+}
+
 // Newsletter API: subscribe (JSON POST) — the public signup form posts here.
 // Plain route (not a server fn) so it works on the published host; fresh
 // signups queue a welcome email, duplicates are accepted but not re-queued.

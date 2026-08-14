@@ -12,6 +12,8 @@ async function fs() {
 export const CONTACT_MESSAGES_FILE = "/home/team/shared/contact-messages.jsonl";
 
 export type ContactMessage = {
+  /** Present on DB-backed rows (contact_messages.id); file-fallback rows have none. */
+  id?: number;
   name: string;
   email: string;
   company?: string;
@@ -102,4 +104,74 @@ export async function saveContactMessage(input: {
     await af(CONTACT_MESSAGES_FILE, JSON.stringify(record) + "\n", "utf8");
   }
   return record;
+}
+
+/**
+ * Reads all contact messages (newest first). Uses the database when
+ * `DATABASE_URL` is set, otherwise falls back to the JSONL file. Mirrors
+ * `readSubscribers` in src/lib/newsletter.ts.
+ */
+export async function listContactMessages(): Promise<ContactMessage[]> {
+  const sql = await db();
+  if (sql) {
+    await ensureContactMessagesTable(sql);
+    const rows = (await sql`
+      SELECT id, name, email, company, message, submitted_at
+      FROM contact_messages
+      ORDER BY submitted_at DESC
+    `) as {
+      id: number;
+      name: string;
+      email: string;
+      company: string | null;
+      message: string;
+      submitted_at: Date | string;
+    }[];
+    return rows.map((r) => ({
+      id: r.id,
+      name: r.name,
+      email: r.email,
+      company: r.company ?? undefined,
+      message: r.message,
+      submittedAt: new Date(r.submitted_at).toISOString(),
+    }));
+  }
+  return readContactMessagesFromFile();
+}
+
+/** Reads all contact messages from the JSONL file, newest first, skipping malformed lines. */
+async function readContactMessagesFromFile(): Promise<ContactMessage[]> {
+  let raw: string;
+  try {
+    raw = await (await fs()).readFile(CONTACT_MESSAGES_FILE, "utf8");
+  } catch (e) {
+    if ((e as { code?: string }).code === "ENOENT") return [];
+    throw e;
+  }
+  const messages: ContactMessage[] = [];
+  for (const line of raw.split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    try {
+      const parsed = JSON.parse(trimmed) as Partial<ContactMessage>;
+      if (
+        typeof parsed.name === "string" &&
+        typeof parsed.email === "string" &&
+        typeof parsed.message === "string" &&
+        typeof parsed.submittedAt === "string"
+      ) {
+        messages.push({
+          name: parsed.name,
+          email: parsed.email,
+          company: parsed.company,
+          message: parsed.message,
+          submittedAt: parsed.submittedAt,
+        });
+      }
+    } catch {
+      // Skip malformed lines rather than failing the whole read.
+    }
+  }
+  // The file is append-only (oldest first) — flip to match the DB order.
+  return messages.reverse();
 }

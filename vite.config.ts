@@ -108,6 +108,25 @@ function newsletterApiPlugin(): Plugin {
           res.end(JSON.stringify({ error: "Failed to save message" }));
         }
       });
+
+      server.middlewares.use("/api/contact-messages", async (req, res) => {
+        if (req.method !== "GET") {
+          res.statusCode = 405;
+          res.end(JSON.stringify({ error: "Method not allowed" }));
+          return;
+        }
+        try {
+          const { GET: contactMessagesGet } = await import(
+            "./src/routes/api/contact-messages"
+          );
+          const data = await contactMessagesGet();
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify(await data.json()));
+        } catch {
+          res.statusCode = 500;
+          res.end(JSON.stringify({ error: "Failed to read messages" }));
+        }
+      });
       server.middlewares.use("/api/newsletter/subscribe", async (req, res) => {
         if (req.method !== "POST") {
           res.statusCode = 405;
